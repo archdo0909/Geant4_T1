@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="ソース ファイル">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="ヘッダー ファイル">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="リソース ファイル">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="B1ActionInitialization.hh">
+      <Filter>ヘッダー ファイル</Filter>
+    </None>
+    <None Include="B1DetectorConstruction.hh">
+      <Filter>ヘッダー ファイル</Filter>
+    </None>
+    <None Include="B1EventAction.hh">
+      <Filter>ヘッダー ファイル</Filter>
+    </None>
+    <None Include="B1PrimaryGeneratorAction.hh">
+      <Filter>ヘッダー ファイル</Filter>
+    </None>
+    <None Include="B1Run.hh">
+      <Filter>ヘッダー ファイル</Filter>
+    </None>
+    <None Include="B1RunAction.hh">
+      <Filter>ヘッダー ファイル</Filter>
+    </None>
+    <None Include="B1SteppingAction.hh">
+      <Filter>ヘッダー ファイル</Filter>
+    </None>
+    <None Include="T1BarrelCalHit.hh">
+      <Filter>ヘッダー ファイル</Filter>
+    </None>
+    <None Include="T1BarrelCalSD.hh">
+      <Filter>ヘッダー ファイル</Filter>
+    </None>
+    <None Include="RootIO.hh">
+      <Filter>ヘッダー ファイル</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="B1ActionInitialization.cc">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="B1DetectorConstruction.cc">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="B1EventAction.cc">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="B1PrimaryGeneratorAction.cc">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="B1Run.cc">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="B1RunAction.cc">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="B1SteppingAction.cc">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="exampleB1.cc">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="T1BarrelCalSD.cc">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="T1BarrelCalHit.cc">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

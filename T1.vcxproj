@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{20812775-4D4C-492A-BEC0-2D41A65221FF}</ProjectGuid>
+    <RootNamespace>T1</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>c:\Users\Kim\Documents\GEANT\geant4_10_01_p03\examples\basic\T1\Debug\</OutDir>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>C:\Users\Kim\Documents\GEANT\geant4_10_01_p03-install\include\Geant4;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <PreprocessorDefinitions>_CONSOLE;_WIN32;WIN32;OS;XPNET;_CRT_SECURE_NO_DEPRECATE;_WINDOWS;_DEBUG;G4_STORE_TRAJECTORY;G4VERBOSE;G4LIB_BUILD_DLL;G4UI_USE;G4VIS_USE;G4INTY_USE_WIN32;G4UI_USE_WIN32;G4VIS_USE_OPENGLWIN32;G4VIS_USE_OPENGL;CMAKE_INTDIR="Debug";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ProgramDataBaseFileName>C:/Users/Kim/Documents/GEANT/geant4_10_01_p03/examples/basic/T1/Debug/exampleB1.pdb</ProgramDataBaseFileName>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;C:\Users\Kim\Documents\GEANT\geant4_10_01_p03-install\lib\G4Tree.lib;C:\Users\Kim\Documents\GEANT\geant4_10_01_p03-install\lib\G4FR.lib;C:\Users\Kim\Documents\GEANT\geant4_10_01_p03-install\lib\G4GMocren.lib;C:\Users\Kim\Documents\GEANT\geant4_10_01_p03-install\lib\G4visHepRep.lib;C:\Users\Kim\Documents\GEANT\geant4_10_01_p03-install\lib\G4RayTracer.lib;C:\Users\Kim\Documents\GEANT\geant4_10_01_p03-install\lib\G4VRML.lib;C:\Users\Kim\Documents\GEANT\geant4_10_01_p03-install\lib\G4OpenGL.lib;C:\Users\Kim\Documents\GEANT\geant4_10_01_p03-install\lib\G4gl2ps.lib;C:\Users\Kim\Documents\GEANT\geant4_10_01_p03-install\lib\G4vis_management.lib;C:\Users\Kim\Documents\GEANT\geant4_10_01_p03-install\lib\G4modeling.lib;C:\Users\Kim\Documents\GEANT\geant4_10_01_p03-install\lib\G4interfaces.lib;C:\Users\Kim\Documents\GEANT\geant4_10_01_p03-install\lib\G4persistency.lib;C:\Users\Kim\Documents\GEANT\geant4_10_01_p03-install\lib\G4analysis.lib;C:\Users\Kim\Documents\GEANT\geant4_10_01_p03-install\lib\G4error_propagation.lib;C:\Users\Kim\Documents\GEANT\geant4_10_01_p03-install\lib\G4readout.lib;C:\Users\Kim\Documents\GEANT\geant4_10_01_p03-install\lib\G4physicslists.lib;C:\Users\Kim\Documents\GEANT\geant4_10_01_p03-install\lib\G4run.lib;C:\Users\Kim\Documents\GEANT\geant4_10_01_p03-install\lib\G4event.lib;C:\Users\Kim\Documents\GEANT\geant4_10_01_p03-install\lib\G4tracking.lib;C:\Users\Kim\Documents\GEANT\geant4_10_01_p03-install\lib\G4parmodels.lib;C:\Users\Kim\Documents\GEANT\geant4_10_01_p03-install\lib\G4processes.lib;C:\Users\Kim\Documents\GEANT\geant4_10_01_p03-install\lib\G4digits_hits.lib;C:\Users\Kim\Documents\GEANT\geant4_10_01_p03-install\lib\G4track.lib;C:\Users\Kim\Documents\GEANT\geant4_10_01_p03-install\lib\G4particles.lib;C:\Users\Kim\Documents\GEANT\geant4_10_01_p03-install\lib\G4geometry.lib;C:\Users\Kim\Documents\GEANT\geant4_10_01_p03-install\lib\G4materials.lib;C:\Users\Kim\Documents\GEANT\geant4_10_01_p03-install\lib\G4graphics_reps.lib;C:\Users\Kim\Documents\GEANT\geant4_10_01_p03-install\lib\G4intercoms.lib;C:\Users\Kim\Documents\GEANT\geant4_10_01_p03-install\lib\G4global.lib;C:\Users\Kim\Documents\GEANT\geant4_10_01_p03-install\lib\G4clhep.lib;C:\Users\Kim\Documents\GEANT\geant4_10_01_p03-install\lib\G4expat.lib;C:\Users\Kim\Documents\GEANT\geant4_10_01_p03-install\lib\G4zlib.lib;C:\Users\Kim\Documents\GEANT\geant4_10_01_p03-install\lib\G4geomUSolids.lib;glu32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ImportLibrary>C:/Users/Kim/Documents/GEANT/geant4_10_01_p03/examples/basic/T1/Debug/exampleB1.lib</ImportLibrary>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="B1ActionInitialization.hh" />
+    <None Include="B1DetectorConstruction.hh" />
+    <None Include="B1EventAction.hh" />
+    <None Include="B1PrimaryGeneratorAction.hh" />
+    <None Include="B1Run.hh" />
+    <None Include="B1RunAction.hh" />
+    <None Include="B1SteppingAction.hh" />
+    <None Include="RootIO.hh" />
+    <None Include="T1BarrelCalHit.hh" />
+    <None Include="T1BarrelCalSD.hh" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="B1ActionInitialization.cc" />
+    <ClCompile Include="B1DetectorConstruction.cc" />
+    <ClCompile Include="B1EventAction.cc" />
+    <ClCompile Include="B1PrimaryGeneratorAction.cc" />
+    <ClCompile Include="B1Run.cc" />
+    <ClCompile Include="B1RunAction.cc" />
+    <ClCompile Include="B1SteppingAction.cc" />
+    <ClCompile Include="exampleB1.cc" />
+    <ClCompile Include="T1BarrelCalHit.cc" />
+    <ClCompile Include="T1BarrelCalSD.cc" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
