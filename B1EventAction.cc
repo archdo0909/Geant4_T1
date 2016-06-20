@@ -87,12 +87,12 @@ void B1EventAction::EndOfEventAction(const G4Event* anEvent)
 	// for barrel calorimeter
 	// [ E0 E1 E2 E3 E4 E5 E6 E7 ] (deposit energy in each module in MeV)
 	static G4int idcal= -1;
-	if(idcal<0)
+	if(idcal<0)	idcal=SDManager->GetCollectionID("BarrelCal");
 		idcal= 0; //SDManager-> GetCollectionID("/barrelCal_HC");
 
 	T1BarrelCalHitsCollection* hccal = (T1BarrelCalHitsCollection*)HCTE-> GetHC(idcal);
-
 	G4double edep[NCHANNEL_BCAL];
+	
 	G4int idx;
 	for (idx=0; idx< NCHANNEL_BCAL; idx++) {
 		edep[idx]= 0.;
@@ -103,8 +103,12 @@ void B1EventAction::EndOfEventAction(const G4Event* anEvent)
 		for(idx=0; idx< nhits; idx++) {
 			G4int ich= (*hccal)[idx]-> GetID();
 			edep[ich]= (*hccal)[idx]-> GetEdep();
+			G4ThreeVector position = (*hccal)[idx]->GetPos();
+			ofs << position << " ";
+
 		}
 	}
+	ofs << G4endl;
 
 	// output to a file
 	for (idx=0; idx< NCHANNEL_BCAL; idx++) {

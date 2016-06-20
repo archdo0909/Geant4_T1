@@ -66,16 +66,19 @@ T1BarrelCalSD::~T1BarrelCalSD()
 
 void T1BarrelCalSD::Initialize(G4HCofThisEvent* HCE)
 {
+	//create hit collections
 	fTrackerCollection = new T1BarrelCalHitsCollection
 		(SensitiveDetectorName,collectionName[0]); 
+
 	if (fHCID < 0) {
 		G4cout << "CalorimeterSD::Initialize:  " << SensitiveDetectorName << "   " 
 			<< collectionName[0] << G4endl;
 		fHCID = GetCollectionID(0);
-
 	}
+
 	HCE->AddHitsCollection(fHCID, fTrackerCollection);
 
+	//clear energy deposit buffer
 	for (G4int i=0; i< NCHANNEL_BCAL; i++) edepbuf[i]=0.;
 }
 
@@ -83,22 +86,22 @@ void T1BarrelCalSD::Initialize(G4HCofThisEvent* HCE)
 
 G4bool T1BarrelCalSD::ProcessHits(G4Step* aStep,G4TouchableHistory*)
 {
-	
+#if 0
 	//////////////////////////////////////////////////////////////////////////
 	//Get energy deposited in this step
 	// energy deposit
-	G4double edep = step->GetTotalEnergyDeposit();
+	G4double edep = aStep->GetTotalEnergyDeposit();
 
 	// step length
 	G4double stepLength = 0.;
-	if ( step->GetTrack()->GetDefinition()->GetPDGCharge() != 0. ) {
-		stepLength = step->GetStepLength();
+	if ( aStep->GetTrack()->GetDefinition()->GetPDGCharge() != 0. ) {
+		stepLength = aStep->GetStepLength();
 	}
 
 	if ( edep==0. && stepLength == 0. ) return false;      
 
 	G4TouchableHistory* touchable
-		= (G4TouchableHistory*)(step->GetPreStepPoint()->GetTouchable());
+		= (G4TouchableHistory*)(aStep->GetPreStepPoint()->GetTouchable());
 
 	// Get calorimeter cell id 
 	G4int layerNumber = touchable->GetReplicaNumber(1);
@@ -119,11 +122,10 @@ G4bool T1BarrelCalSD::ProcessHits(G4Step* aStep,G4TouchableHistory*)
 	// Add values
 	hit->Add(edep, stepLength);
 	hitTotal->Add(edep, stepLength); 
-
-	return true;
+#endif
 	//////////////////////////////////////////////////////////////////////////
 
-#if 0
+#if 1
 
 	G4double edep = aStep->GetTotalEnergyDeposit();
 
@@ -134,6 +136,7 @@ G4bool T1BarrelCalSD::ProcessHits(G4Step* aStep,G4TouchableHistory*)
 	newHit->SetChamberNb(aStep->GetPreStepPoint()->GetTouchable()
 		->GetReplicaNumber());
 	newHit->SetEdep     (edep);
+	newHit->SetPos      (aStep->GetPostStepPoint()->GetPosition());
 	newHit->SetPos      (aStep->GetPostStepPoint()->GetPosition());
 	fTrackerCollection->insert( newHit );
 

@@ -1,20 +1,11 @@
-﻿19/06/2016 9:10:13 AM にビルドを開始しました。
+﻿20/06/2016 10:32:23 PM にビルドを開始しました。
      1>ノード 2 上のプロジェクト "C:\Users\Kim\Documents\GEANT\geant4_10_01_p03\examples\basic\T1\T1.vcxproj" (build ターゲット)。
      1>InitializeBuildStatus:
          "AlwaysCreate" が指定されたため "Debug\T1.unsuccessfulbuild" を作成しています。
        ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I"C:\Users\Kim\Documents\GEANT\geant4_10_01_p03-install\include\Geant4" /Zi /nologo /W3 /WX- /Od /Oy- /D _CONSOLE /D _WIN32 /D WIN32 /D OS /D XPNET /D _CRT_SECURE_NO_DEPRECATE /D _WINDOWS /D _DEBUG /D G4_STORE_TRAJECTORY /D G4VERBOSE /D G4LIB_BUILD_DLL /D G4UI_USE /D G4VIS_USE /D G4INTY_USE_WIN32 /D G4UI_USE_WIN32 /D G4VIS_USE_OPENGLWIN32 /D G4VIS_USE_OPENGL /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"C:/Users/Kim/Documents/GEANT/geant4_10_01_p03/examples/basic/T1/Debug/exampleB1.pdb" /Gd /TP /analyze- /errorReport:prompt B1DetectorConstruction.cc B1EventAction.cc T1BarrelCalHit.cc T1BarrelCalSD.cc
-         B1DetectorConstruction.cc
-     1>c:\users\kim\documents\geant\geant4_10_01_p03-install\include\geant4\CLHEP/Random/RandExpZiggurat.h(84): warning C4244: '引数' : 'double' から 'float' への変換です。データが失われる可能性があります。
-     1>c:\users\kim\documents\geant\geant4_10_01_p03-install\include\geant4\CLHEP/Random/RandExpZiggurat.h(135): warning C4244: 'return' : 'double' から 'float' への変換です。データが失われる可能性があります。
-     1>c:\users\kim\documents\geant\geant4_10_01_p03-install\include\geant4\CLHEP/Random/RandGaussZiggurat.h(67): warning C4244: 'return' : 'double' から 'float' への変換です。データが失われる可能性があります。
-     1>c:\users\kim\documents\geant\geant4_10_01_p03-install\include\geant4\CLHEP/Random/RandGaussZiggurat.h(114): warning C4244: 'return' : 'double' から 'float' への変換です。データが失われる可能性があります。
-     1>c:\users\kim\documents\geant\geant4_10_01_p03-install\include\geant4\G4AffineTransform.icc(404): warning C4244: '初期化中' : 'std::streamsize' から 'int' への変換です。データが失われる可能性があります。
-         コードを生成中...
-         コンパイル中...
          T1BarrelCalSD.cc
      1>c:\users\kim\documents\geant\geant4_10_01_p03-install\include\geant4\G4AffineTransform.icc(404): warning C4244: '初期化中' : 'std::streamsize' から 'int' への変換です。データが失われる可能性があります。
-         T1BarrelCalHit.cc
          B1EventAction.cc
      1>c:\users\kim\documents\geant\geant4_10_01_p03-install\include\geant4\CLHEP/Random/RandExpZiggurat.h(84): warning C4244: '引数' : 'double' から 'float' への変換です。データが失われる可能性があります。
      1>c:\users\kim\documents\geant\geant4_10_01_p03-install\include\geant4\CLHEP/Random/RandExpZiggurat.h(135): warning C4244: 'return' : 'double' から 'float' への変換です。データが失われる可能性があります。
@@ -22,6 +13,9 @@
      1>c:\users\kim\documents\geant\geant4_10_01_p03-install\include\geant4\CLHEP/Random/RandGaussZiggurat.h(114): warning C4244: 'return' : 'double' から 'float' への変換です。データが失われる可能性があります。
      1>c:\users\kim\documents\geant\geant4_10_01_p03-install\include\geant4\G4AffineTransform.icc(404): warning C4244: '初期化中' : 'std::streamsize' から 'int' への変換です。データが失われる可能性があります。
          コードを生成中...
+         スキップ中... (関連する変更は検出されませんでした)
+         T1BarrelCalHit.cc
+         B1DetectorConstruction.cc
        ManifestResourceCompile:
          すべての出力が最新のものです。
        Link:
@@ -49,4 +43,4 @@
 
 ビルドに成功しました。
 
-経過時間 00:00:05.10
+経過時間 00:00:04.59

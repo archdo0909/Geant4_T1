@@ -53,10 +53,16 @@ class B1Run : public G4Run
     // get methods
     G4double GetEdep()  const { return fEdep; }
     G4double GetEdep2() const { return fEdep2; }
+	G4double GetPos_x() const { return fposx;}
+	G4double GetPos_y() const { return fposy;}
+	G4double GetPos_z() const { return fposz;}
 
   private:
     G4double  fEdep;
     G4double  fEdep2;
+	G4double  fposx;
+	G4double  fposy;
+	G4double  fposz;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
