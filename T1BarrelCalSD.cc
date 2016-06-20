@@ -37,6 +37,8 @@
 #include "G4Step.hh"
 #include "G4ThreeVector.hh"
 #include "G4SDManager.hh"
+#include "G4TouchableHistory.hh"
+#include "G4Track.hh"
 #include "G4ios.hh"
 
 //#include "RootIO.hh"
@@ -79,29 +81,54 @@ void T1BarrelCalSD::Initialize(G4HCofThisEvent* HCE)
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-G4bool T1BarrelCalSD::ProcessHits(G4Step* aStep,G4TouchableHistory* R0hist)
+G4bool T1BarrelCalSD::ProcessHits(G4Step* aStep,G4TouchableHistory*)
 {
+	
+	//////////////////////////////////////////////////////////////////////////
+	//Get energy deposited in this step
+	// energy deposit
+	G4double edep = step->GetTotalEnergyDeposit();
+
+	// step length
+	G4double stepLength = 0.;
+	if ( step->GetTrack()->GetDefinition()->GetPDGCharge() != 0. ) {
+		stepLength = step->GetStepLength();
+	}
+
+	if ( edep==0. && stepLength == 0. ) return false;      
+
+	G4TouchableHistory* touchable
+		= (G4TouchableHistory*)(step->GetPreStepPoint()->GetTouchable());
+
+	// Get calorimeter cell id 
+	G4int layerNumber = touchable->GetReplicaNumber(1);
+
+	// Get hit accounting data for this cell
+	T1BarrelCalHit* hit = (*fTrackerCollection)[layerNumber];
+	if ( ! hit ) {
+		G4ExceptionDescription msg;
+		msg << "Cannot access hit " << layerNumber; 
+		G4Exception("B4cCalorimeterSD::ProcessHits()",
+			"MyCode0004", FatalException, msg);
+	}         
+
+	// Get hit for total accounting
+	T1BarrelCalHit* hitTotal 
+		= (*fTrackerCollection)[fTrackerCollection->entries()-1];
+
+	// Add values
+	hit->Add(edep, stepLength);
+	hitTotal->Add(edep, stepLength); 
+
+	return true;
+	//////////////////////////////////////////////////////////////////////////
+
+#if 0
+
 	G4double edep = aStep->GetTotalEnergyDeposit();
 
 	if(edep==0.) return false;
 
-	//////////////////////////////////////////////////////////////////////////
-	//Get volume and copy number
-	G4StepPoint* preStepPoint = aStep->GetTotalEnergyDeposit();
-	G4TouchableHistory* theTouchable = (G4TouchableHistory*)(preStepPoint->GetTouchable());
-
-	G4VPhysicalVolume* thePhysical = theTouchable->GetVolume();
-	G4int copyNo = thePhysical->GetCopyNo();
-	//Get corresponding hit 
-	T1BarrelCalHit* aHit = (*fTrackerCollection)[copyNo];
-
-	//Check to see if this is the first time the hit has been updated
-	if(!(aHit->GetLogialVolume())){
-
-	}
-
-	//////////////////////////////////////////////////////////////////////////
-	
 	T1BarrelCalHit* newHit = new T1BarrelCalHit();
 	newHit->SetTrackID  (aStep->GetTrack()->GetTrackID());
 	newHit->SetChamberNb(aStep->GetPreStepPoint()->GetTouchable()
@@ -112,6 +139,7 @@ G4bool T1BarrelCalSD::ProcessHits(G4Step* aStep,G4TouchableHistory* R0hist)
 
 	//newHit->Print();
 	//newHit->Draw();
+#endif
 
 	return true;
 }
