@@ -79,12 +79,29 @@ void T1BarrelCalSD::Initialize(G4HCofThisEvent* HCE)
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-G4bool T1BarrelCalSD::ProcessHits(G4Step* aStep,G4TouchableHistory*)
+G4bool T1BarrelCalSD::ProcessHits(G4Step* aStep,G4TouchableHistory* R0hist)
 {
 	G4double edep = aStep->GetTotalEnergyDeposit();
 
 	if(edep==0.) return false;
 
+	//////////////////////////////////////////////////////////////////////////
+	//Get volume and copy number
+	G4StepPoint* preStepPoint = aStep->GetTotalEnergyDeposit();
+	G4TouchableHistory* theTouchable = (G4TouchableHistory*)(preStepPoint->GetTouchable());
+
+	G4VPhysicalVolume* thePhysical = theTouchable->GetVolume();
+	G4int copyNo = thePhysical->GetCopyNo();
+	//Get corresponding hit 
+	T1BarrelCalHit* aHit = (*fTrackerCollection)[copyNo];
+
+	//Check to see if this is the first time the hit has been updated
+	if(!(aHit->GetLogialVolume())){
+
+	}
+
+	//////////////////////////////////////////////////////////////////////////
+	
 	T1BarrelCalHit* newHit = new T1BarrelCalHit();
 	newHit->SetTrackID  (aStep->GetTrack()->GetTrackID());
 	newHit->SetChamberNb(aStep->GetPreStepPoint()->GetTouchable()
@@ -101,7 +118,7 @@ G4bool T1BarrelCalSD::ProcessHits(G4Step* aStep,G4TouchableHistory*)
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void T1BarrelCalSD::EndOfEvent(G4HCofThisEvent*)
+void T1BarrelCalSD::EndOfEvent(G4HCofThisEvent* HCTE)
 {
 	// storing the hits in ROOT file
 	G4int NbHits = fTrackerCollection->entries();
