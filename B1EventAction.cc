@@ -104,17 +104,17 @@ void B1EventAction::EndOfEventAction(const G4Event* anEvent)
 			G4int ich= (*hccal)[idx]-> GetID();
 			edep[ich]= (*hccal)[idx]-> GetEdep();
 			G4ThreeVector position = (*hccal)[idx]->GetPos();
-			ofs << position << " ";
+			ofs << position <<edep[ich] <<ich<<" ";
 
 		}
 	}
 	ofs << G4endl;
 
 	// output to a file
-	for (idx=0; idx< NCHANNEL_BCAL; idx++) {
-		ofs << edep[idx]/MeV << " ";
-	}
-	ofs << G4endl;
+//	for (idx=0; idx< NCHANNEL_BCAL; idx++) {
+//		ofs << edep[idx]/MeV << " ";
+//	}
+//	ofs << G4endl;
 
   // accumulate statistics in B1Run
   B1Run* run 
