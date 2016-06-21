@@ -1,7 +1,7 @@
-﻿21/06/2016 2:20:22 PM にビルドを開始しました。
+﻿21/06/2016 9:23:29 PM にビルドを開始しました。
      1>ノード 2 上のプロジェクト "C:\Users\Kim\Documents\GEANT\geant4_10_01_p03\examples\basic\T1\T1.vcxproj" (build ターゲット)。
      1>InitializeBuildStatus:
-         "Debug\T1.unsuccessfulbuild" のタッチ タスクを実行しています。
+         "AlwaysCreate" が指定されたため "Debug\T1.unsuccessfulbuild" を作成しています。
        ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I"C:\Users\Kim\Documents\GEANT\geant4_10_01_p03-install\include\Geant4" /Zi /nologo /W3 /WX- /Od /Oy- /D _CONSOLE /D _WIN32 /D WIN32 /D OS /D XPNET /D _CRT_SECURE_NO_DEPRECATE /D _WINDOWS /D _DEBUG /D G4_STORE_TRAJECTORY /D G4VERBOSE /D G4LIB_BUILD_DLL /D G4UI_USE /D G4VIS_USE /D G4INTY_USE_WIN32 /D G4UI_USE_WIN32 /D G4VIS_USE_OPENGLWIN32 /D G4VIS_USE_OPENGL /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"C:/Users/Kim/Documents/GEANT/geant4_10_01_p03/examples/basic/T1/Debug/exampleB1.pdb" /Gd /TP /analyze- /errorReport:prompt B1DetectorConstruction.cc
          B1DetectorConstruction.cc
@@ -31,4 +31,4 @@
 
 ビルドに成功しました。
 
-経過時間 00:00:02.49
+経過時間 00:00:03.48
