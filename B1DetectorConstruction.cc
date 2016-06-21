@@ -154,7 +154,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
   //
  // G4double gap = 0.5*mm;        //a gap for wrapping
  // G4double dX = cryst_dX - gap, dY = cryst_dY - gap;
-  G4double dX = 80*mm, dY = 80*mm, dZ = 94*mm;
+ // G4double dX = 80*mm, dY = 80*mm, dZ = 94*mm;
 
   //G4Box* solidRing =
 	 // new G4Box("Ring", dX*8, dY/2, cryst_dZ/2);
@@ -164,13 +164,13 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	 // default_mat,         //its material
 	 // "Ring");             //its name
 
-  G4Box* solidBox =
-	  new G4Box("Container", dX, dY, dZ);
+ // G4Box* solidBox =
+//	  new G4Box("Container", dX, dY, dZ);
 
-  G4LogicalVolume* logicCon =
-	  new G4LogicalVolume(solidBox,			//its solid
-						  default_mat,		//its material
-						  "Container");		//its name
+ // G4LogicalVolume* logicCon =
+//	  new G4LogicalVolume(solidBox,			//its solid
+	//					  default_mat,		//its material
+	//					  "Container");		//its name
 
   //     
   // define crystal
@@ -185,14 +185,14 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 
   //logicCryst->SetSensitiveDetector(barrelCalSD);
 
-  G4Box* solidCryst = new G4Box("crystal", cryst_dX, cryst_dY, cryst_dZ);
+//  G4Box* solidCryst = new G4Box("crystal", cryst_dX, cryst_dY, cryst_dZ);
 
-  G4LogicalVolume* logicCryst = 
-    new G4LogicalVolume(solidCryst,          //its solid
-                        cryst_mat,           //its material
-                        "CrystalLV");        //its name
+//  G4LogicalVolume* logicCryst = 
+//    new G4LogicalVolume(solidCryst,          //its solid
+//                        cryst_mat,           //its material
+//                       "CrystalLV");        //its name
 
-  logicCryst->SetSensitiveDetector(barrelCalSD);
+//     logicCryst->SetSensitiveDetector(barrelCalSD);
 
 
   // place crystals within a ring 
@@ -238,7 +238,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 						  "HadCalorimeterLogical");
 
   new G4PVPlacement(0,                                    //no rotation
-	                G4ThreeVector(0.,0.,3.*m),            //at (0,0,0)
+	                G4ThreeVector(0.,0.,3.*cm),            //at (0,0,0)
 	                hadCalorimeterLogical,                //its logical volume
 					"HadCalorimeterPhysical",             //its name
 					0,                                    //its mother  volume
@@ -260,9 +260,10 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 				  5.*mm); 
 
   // hadron calorimeter cell 
-  G4VSolid* HadCalCellSolid = new G4Box("HadCalCellBox",5.*mm,10.*mm,80.*cm); 
-  G4LogicalVolume* HadCalCellLogical = 
-	  new G4LogicalVolume(HadCalCellSolid,
+  G4VSolid* HadCalCellSolid 
+	  = new G4Box("HadCalCellBox",5.*mm,10.*mm,80.*cm); 
+  G4LogicalVolume* HadCalCellLogical
+	  = new G4LogicalVolume(HadCalCellSolid,
 	                      default_mat,
 						  "HadCalCellLogical"); 
 
@@ -275,29 +276,35 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 
   // hadron calorimeter layers 
   G4VSolid* HadCalLayerSolid = new G4Box("HadCalLayerBox",5.*mm,10.*mm, 10.*mm); 
-  G4LogicalVolume* HadCalLayerLogical = 
-	  new G4LogicalVolume(HadCalLayerSolid,
-	                      cryst_mat,
-	                      "HadCalLayerLogical"); 
+  G4LogicalVolume* HadCalLayerLogical
+	  = new G4LogicalVolume(HadCalLayerSolid,
+	                        cryst_mat,
+	                        "HadCalLayerLogical"); 
+
+  HadCalLayerLogical->SetSensitiveDetector(barrelCalSD);
+
   new G4PVPlacement(0,
-               	    G4ThreeVector(0., 0., 0.),
-	                HadCalCellLogical,
-					"HadCalCelLogical"
-	                HadCalColumnLogical,
+	                G4ThreeVector(0., 0., 3.*cm),
+					HadCalLayerLogical,
+					"Calorimeter",
+					HadCalCellLogical,
 					false,
-	                8,
-	                10.*mm); 
+					8,
+					checkOverlaps);
+
+//  fScoringVolume = HadCalLayerLogical;
+ 
   //G4VSolid* HadCalLayerSolid = new G4Box("HadCalLayerBox",5.*mm,10.*mm, 10.*mm); 
   //G4LogicalVolume* HadCalLayerLogical = 
 	 // new G4LogicalVolume(HadCalLayerSolid,
-	 //                     cryst_mat,
-	 //                     "HadCalLayerLogical"); 
+	 // cryst_mat,
+	 // "HadCalLayerLogical"); 
   //new G4PVReplica("HadCalLayerPhysical",
-	 //             HadCalLayerLogical,
-	 //             HadCalCellLogical,
-	 //             kZAxis,
-	 //             8,
-	 //             10.*mm); 
+	 // HadCalLayerLogical,
+	 // HadCalCellLogical,
+	 // kZAxis,
+	 // 8,
+	 // 10.*mm); 
 
   //// scintillator plates 
   //G4VSolid* HadCalScintiSolid = new G4Box("HadCalScintiBox",15.*cm,15.*cm,0.5*cm); 
@@ -317,14 +324,18 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
   //
   // place detector in world
   //                    
-  new G4PVPlacement(0,                       //no rotation
-	  G4ThreeVector(0,0,15*cm),         //at (0,0,0)
-	  logicRing,               //its logical volume
-	  "Detector",              //its name
-	  logicWorld,              //its mother  volume
-	  false,                   //no boolean operation
-	  0,                       //copy number
-	  checkOverlaps);         // checking overlaps 
+
+
+
+  //new G4PVPlacement(0,                       //no rotation
+	 // G4ThreeVector(0,0,15*cm),         //at (0,0,0)
+	 // logicRing,               //its logical volume
+	 // "Detector",              //its name
+	 // logicWorld,              //its mother  volume
+	 // false,                   //no boolean operation
+	 // 0,                       //copy number
+	 // checkOverlaps);         // checking overlaps 
+
   //new G4PVPlacement(0,                       //no rotation
   //                  pos2,                    //at position
   //                  logicShape2,             //its logical volume
