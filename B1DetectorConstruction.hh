@@ -46,6 +46,7 @@ class B1DetectorConstruction : public G4VUserDetectorConstruction
     virtual ~B1DetectorConstruction();
 
     virtual G4VPhysicalVolume* Construct();
+	virtual void ConstructSDandField();
     
     G4LogicalVolume* GetScoringVolume() const { return fScoringVolume; }
 

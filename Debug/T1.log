@@ -1,4 +1,4 @@
-﻿21/06/2016 9:23:29 PM にビルドを開始しました。
+﻿22/06/2016 12:47:35 AM にビルドを開始しました。
      1>ノード 2 上のプロジェクト "C:\Users\Kim\Documents\GEANT\geant4_10_01_p03\examples\basic\T1\T1.vcxproj" (build ターゲット)。
      1>InitializeBuildStatus:
          "AlwaysCreate" が指定されたため "Debug\T1.unsuccessfulbuild" を作成しています。
@@ -31,4 +31,4 @@
 
 ビルドに成功しました。
 
-経過時間 00:00:03.48
+経過時間 00:00:02.36
