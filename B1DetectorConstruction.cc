@@ -93,7 +93,7 @@ void B1DetectorConstruction::DefineMaterials()
 
 G4VPhysicalVolume* B1DetectorConstruction::Construct()
 {
-#if 0
+#if 1
 	G4double a, z;
 	G4double density, temperature, pressure;
 	G4int nel;
@@ -269,7 +269,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	//                                               minEkin));
 #endif
 
-#if 1
+#if 0
   //Get nist material manager
   G4NistManager* nist = G4NistManager::Instance();
 
@@ -284,8 +284,8 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
   // Gamma detector Parameters
   //
   G4double cryst_dX = 6*cm, cryst_dY = 6*cm, cryst_dZ = 3*cm;
-  G4int X_cryst = 8;
-  G4int Y_cryst = 8;
+  G4int X_cryst = 2;
+  G4int Y_cryst = 2;
   G4int nb_cryst = X_cryst * Y_cryst;
   G4int nb_rings = 9;
   //
@@ -297,11 +297,13 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
   G4double ring_R2 = (ring_R1+cryst_dZ)/cosdPhi;
 
   G4SDManager* SDman= G4SDManager::GetSDMpointer();
-  //G4String SDname="BarrelCal";
+  G4String SDname="BarrelCal";
   
+  T1BarrelCalSD* barrelCalSD = new T1BarrelCalSD(SDname);
+  SDman-> AddNewDetector(barrelCalSD);
 
   // for barrel calorimeter
-  T1BarrelCalSD* barrelCalSD[NUM_CRYSTAL] = { NULL };
+  //T1BarrelCalSD* barrelCalSD[NUM_CRYSTAL] = { NULL };
    
   // Option to switch on/off checking of volumes overlaps
   //
@@ -358,11 +360,11 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
   G4Box* solidCryst = new G4Box("crystal", 10*mm, 10*mm, 5*mm);
 
   //! Crystalのボリュームを定義する
-  G4LogicalVolume* logicCryst[NUM_CRYSTAL] = { NULL };
-  //G4LogicalVolume* logicCryst = new G4LogicalVolume(solidCryst, cryst_mat, "CrystalLV");
+  //G4LogicalVolume* logicCryst[NUM_CRYSTAL] = { NULL };
+  G4LogicalVolume* logicCryst = new G4LogicalVolume(solidCryst, cryst_mat, "CrystalLV");
 
   //! Crystalに検出器を定義する
-  //logicCryst->SetSensitiveDetector(barrelCalSD);
+  logicCryst->SetSensitiveDetector(barrelCalSD);
 
    for(G4int icrys = 0; icrys < X_cryst; icrys++)
    {
@@ -371,25 +373,25 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		   G4double X = icrys * 10.0;
 		   G4double Y = jcrys * 10.0;
 
-		   G4String SDNoName="BarrelCal" + std::to_string((long double)icrys+jcrys);
+		   //G4String SDNoName="BarrelCal" + std::to_string((long double)icrys+jcrys);
 
-		   barrelCalSD[icrys+jcrys] = new T1BarrelCalSD(SDNoName);
-		   SDman-> AddNewDetector(barrelCalSD[icrys+jcrys]);
+		   //barrelCalSD[icrys+jcrys] = new T1BarrelCalSD(SDNoName);
+		   //SDman-> AddNewDetector(barrelCalSD[icrys+jcrys]);
 
-		   logicCryst[icrys+jcrys] = new G4LogicalVolume(solidCryst, cryst_mat, "CrystalLV");
-		   logicCryst[icrys+jcrys]->SetSensitiveDetector(barrelCalSD[icrys+jcrys]);
+		   //logicCryst[icrys+jcrys] = new G4LogicalVolume(solidCryst, cryst_mat, "CrystalLV");
+		   //logicCryst[icrys+jcrys]->SetSensitiveDetector(barrelCalSD[icrys+jcrys]);
 
 		  // G4ThreeVector position = (icrys * 10., jcrys * 10., 0.);
 		   G4ThreeVector position = G4ThreeVector(icrys * 10.,jcrys * 10.,0.);
-		   G4int c_num = (icrys + 1)*(jcrys + 1);
+		   G4int c_num = (icrys)*(jcrys);
 		   new G4PVPlacement(
 			                 0,
 							 position,
-							 logicCryst[icrys+jcrys],
+							 logicCryst,
 							 "crystal",
 							 calorLV,
 							 false,
-							 c_num,
+							 0,
 							 checkOverlaps);
 	   }
    }
@@ -459,7 +461,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 
   //fScoringVolume = logicCryst;
 
-  return physWorld;
+  return fPhysiWorld;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

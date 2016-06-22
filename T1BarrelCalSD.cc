@@ -159,6 +159,8 @@ G4bool T1BarrelCalSD::ProcessHits(G4Step* aStep,G4TouchableHistory*)
 	newHit->SetPos      (aStep->GetPostStepPoint()->GetPosition());
 	fTrackerCollection->insert( newHit );
 
+	G4cout << "Track ID : " << newHit->fTrackID << ",  Chamber : " << newHit->fChamberNb << ",  PosX : " << newHit->fPos.x() << ",  PosY : " << newHit->fPos.y() << G4endl;
+
 	//newHit->Print();
 	//newHit->Draw();
 #endif

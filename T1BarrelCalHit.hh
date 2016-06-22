@@ -49,13 +49,15 @@ public:
 	G4double GetEdep()    { return fEdep; };      
 	G4ThreeVector GetPos(){ return fPos; };
 
-private:
-
 	G4int         fTrackID;
 	G4int         fChamberNb;
 	G4double      fEdep;
 	G4double      fTrackLength;
 	G4ThreeVector fPos;
+
+private:
+
+	
 };
 
 typedef G4THitsCollection<T1BarrelCalHit> T1BarrelCalHitsCollection;
@@ -74,6 +76,7 @@ inline void* T1BarrelCalHit::operator new(size_t)
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 inline void T1BarrelCalHit::operator delete(void *aHit)
+
 {
 	T1TrackerHitAllocator.FreeSingle((T1BarrelCalHit*) aHit);
 }
