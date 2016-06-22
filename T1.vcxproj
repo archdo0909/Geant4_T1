@@ -80,6 +80,7 @@
     <None Include="B1Run.hh" />
     <None Include="B1RunAction.hh" />
     <None Include="B1SteppingAction.hh" />
+    <None Include="ExP01ChamberParameterisation.hh" />
     <None Include="RootIO.hh" />
     <None Include="T1BarrelCalHit.hh" />
     <None Include="T1BarrelCalSD.hh" />
@@ -93,6 +94,7 @@
     <ClCompile Include="B1RunAction.cc" />
     <ClCompile Include="B1SteppingAction.cc" />
     <ClCompile Include="exampleB1.cc" />
+    <ClCompile Include="ExP01ChamberParameterisation.cc" />
     <ClCompile Include="T1BarrelCalHit.cc" />
     <ClCompile Include="T1BarrelCalSD.cc" />
   </ItemGroup>

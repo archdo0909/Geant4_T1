@@ -62,8 +62,5 @@
 /vis/viewer/set/autoRefresh true
 /vis/viewer/refresh
 /vis/verbose warnings
-/vis/open OGLSWin32
-/vis/sceneHandler/create OGLSWin32
-/vis/sceneHandler/attach
-/vis/viewer/create ! ! 600
-/vis/viewer/refresh
+/run/beamOn 3
+/vis/scene/notifyHandlers scene-0
