@@ -64,6 +64,7 @@ void B1EventAction::EndOfEventAction(const G4Event* anEvent)
 {   
 	G4cout << ">>> Event ID: " << anEvent-> GetEventID() << G4endl;
 
+
 	G4SDManager* SDManager= G4SDManager::GetSDMpointer();
 
 	// ====================================================================  

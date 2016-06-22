@@ -64,6 +64,7 @@ T1BarrelCalSD::~T1BarrelCalSD()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
+#if 0
 void T1BarrelCalSD::Initialize(G4HCofThisEvent* HCE)
 {
 	//create hit collections
@@ -81,7 +82,25 @@ void T1BarrelCalSD::Initialize(G4HCofThisEvent* HCE)
 	//clear energy deposit buffer
 	for (G4int i=0; i< NCHANNEL_BCAL; i++) edepbuf[i]=0.;
 }
+#endif
 
+void T1BarrelCalSD::Initialize(G4HCofThisEvent* HCE)
+{
+	//create hit collections
+	fTrackerCollection = new T1BarrelCalHitsCollection
+		(SensitiveDetectorName,collectionName[0]); 
+
+	if (fHCID < 0) {
+		G4cout << "CalorimeterSD::Initialize:  " << SensitiveDetectorName << "   " 
+			<< collectionName[0] << G4endl;
+		fHCID = GetCollectionID(0);
+	}
+
+	HCE->AddHitsCollection(fHCID, fTrackerCollection);
+
+	//clear energy deposit buffer
+	for (G4int i=0; i< NCHANNEL_BCAL; i++) edepbuf[i]=0.;
+}
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 G4bool T1BarrelCalSD::ProcessHits(G4Step* aStep,G4TouchableHistory*)

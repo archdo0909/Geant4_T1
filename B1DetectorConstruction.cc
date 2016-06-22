@@ -297,7 +297,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
   G4double ring_R2 = (ring_R1+cryst_dZ)/cosdPhi;
 
   G4SDManager* SDman= G4SDManager::GetSDMpointer();
-  G4String SDname="BarrelCal";
+  //G4String SDname="BarrelCal";
   
 
   // for barrel calorimeter
