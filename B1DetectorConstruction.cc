@@ -93,7 +93,7 @@ void B1DetectorConstruction::DefineMaterials()
 
 G4VPhysicalVolume* B1DetectorConstruction::Construct()
 {
-#if 1
+#if 0
 	G4double a, z;
 	G4double density, temperature, pressure;
 	G4int nel;
@@ -109,6 +109,10 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	//Lead
 	G4Material* Pb = 
 		new G4Material("Lead", z=82., a= 207.19*g/mole, density= 11.35*g/cm3);
+	
+	//Crystal
+	G4NistManager* nist = G4NistManager::Instance();
+	G4Material* cryst_mat   = nist->FindOrBuildMaterial("Lu2SiO5");
 
 	//Xenon gas
 	G4Material* Xenon = 
@@ -122,6 +126,11 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 
 	//--------- Sizes of the principal geometrical components (solids)  ---------
 
+	G4int ChamNum_x = 3;
+	G4int ChamNum_y = 3;
+	G4double SingleChamberWid = 1.*cm;
+	fChamberSpacing = 0.0;
+#if 0
 	fNbOfChambers = 5;
 	fChamberWidth = 20*cm;
 	fChamberSpacing = 80*cm;
@@ -145,8 +154,36 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 
 	G4double HalfWorldLength = 0.5*fWorldLength;
 
+#endif
+	fNbOfChambers = ChamNum_x * ChamNum_y;
+	fChamberWidth = SingleChamberWid * ChamNum_x;
+
+	fTrackerLength = 100*mm; // Full length of Tracker
+	fTargetLength  = 5.0 * cm;                        // Full length of Target
+
+	fTargetMater  = Pb;
+	fChamberMater = cryst_mat;
+
+	fWorldLength= 1.2 *(fTargetLength+fTrackerLength);
+
+	G4double targetSize  = 0.5*fTargetLength;    // Half length of the Target  
+	G4double trackerSize = 0.5*fTrackerLength;   // Half length of the Tracker
+
+	//--------- Definitions of Solids, Logical Volumes, Physical Volumes ---------
+
+	//------------------------------ 
+	// World
+	//------------------------------ 
+
+	G4double HalfWorldLength = 0.5*fWorldLength;
+
 	fSolidWorld= new G4Box("world",HalfWorldLength,HalfWorldLength,HalfWorldLength);
-	fLogicWorld= new G4LogicalVolume( fSolidWorld, Air, "World", 0, 0, 0);
+	fLogicWorld= new G4LogicalVolume( fSolidWorld,			//solid
+	                                  Air,				    //Material
+									  "World",				//name
+									  0,					//FieldManager
+									  0,					//Sensitive Detector
+									  0);					//optimize
 
 	//  Must place the World Physical volume unrotated at (0,0,0).
 	// 
@@ -157,6 +194,8 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		0,               // its mother  volume
 		false,           // no boolean operations
 		0);              // copy number
+
+#if 0
 
 	//------------------------------ 
 	// Target
@@ -176,6 +215,8 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 
 	G4cout << "Target is " << fTargetLength/cm << " cm of " 
 		<< fTargetMater->GetName() << G4endl;
+
+#endif
 
 	//------------------------------ 
 	// Tracker
@@ -200,12 +241,19 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	// An example of Parameterised volumes
 	// dummy values for G4Box -- modified by parameterised volume
 
-	fSolidChamber = new G4Box("chamber", 100*cm, 100*cm, 10*cm); 
+//	fSolidChamber = new G4Box("chamber", 100*cm, 100*cm, 10*cm); 
+	fSolidChamber = new G4Box("chamber", fChamberWidth, fChamberWidth,fTargetLength); 
+//	fLogicChamber = new G4LogicalVolume(fSolidChamber, fChamberMater,"Chamber",0,0,0);
 	fLogicChamber = new G4LogicalVolume(fSolidChamber, fChamberMater,"Chamber",0,0,0);
 
-	G4double firstPosition = -trackerSize + 0.5*fChamberWidth;
-	G4double firstLength = fTrackerLength/10;
-	G4double lastLength  = fTrackerLength;
+	//G4double firstPosition = -trackerSize + 0.5*fChamberWidth;
+	//G4double firstPosition = 0.;
+	G4int Num_x;
+	G4int Num_y;
+	//G4double firstLength = fTrackerLength/10;
+	//G4double lastLength  = fTrackerLength;
+	G4double firstLength = 0;
+	G4double lastLength = ChamNum_y;
 
 	G4VPVParameterisation* chamberParam = new ExP01ChamberParameterisation(  
 		fNbOfChambers,          // NoChambers 
@@ -269,7 +317,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	//                                               minEkin));
 #endif
 
-#if 0
+#if 1
   //Get nist material manager
   G4NistManager* nist = G4NistManager::Instance();
 
@@ -288,16 +336,17 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
   G4int Y_cryst = 2;
   G4int nb_cryst = X_cryst * Y_cryst;
   G4int nb_rings = 9;
+  fNbOfChambers = X_cryst * Y_cryst;
   //
-  G4double dPhi = twopi/nb_cryst, half_dPhi = 0.5*dPhi;
-  G4double cosdPhi = std::cos(half_dPhi);
-  G4double tandPhi = std::tan(half_dPhi);
+  //G4double dPhi = twopi/nb_cryst, half_dPhi = 0.5*dPhi;
+  //G4double cosdPhi = std::cos(half_dPhi);
+  //G4double tandPhi = std::tan(half_dPhi);
   // 
-  G4double ring_R1 = 0.5*cryst_dY/tandPhi;
-  G4double ring_R2 = (ring_R1+cryst_dZ)/cosdPhi;
+  //G4double ring_R1 = 0.5*cryst_dY/tandPhi;
+  //G4double ring_R2 = (ring_R1+cryst_dZ)/cosdPhi;
 
   G4SDManager* SDman= G4SDManager::GetSDMpointer();
-  G4String SDname="BarrelCal";
+  G4String SDname="/barrelCal";
   
   T1BarrelCalSD* barrelCalSD = new T1BarrelCalSD(SDname);
   SDman-> AddNewDetector(barrelCalSD);
@@ -366,9 +415,10 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
   //! Crystalに検出器を定義する
   logicCryst->SetSensitiveDetector(barrelCalSD);
 
-   for(G4int icrys = 0; icrys < X_cryst; icrys++)
+  while (fNbOfChambers != 0){
+   for(int icrys = 0; icrys < X_cryst; icrys++)
    {
-	   for(G4int jcrys = 0; jcrys < Y_cryst; jcrys++)
+	   for(int jcrys = 0; jcrys < Y_cryst; jcrys++)
 	   {
 		   G4double X = icrys * 10.0;
 		   G4double Y = jcrys * 10.0;
@@ -383,18 +433,20 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 
 		  // G4ThreeVector position = (icrys * 10., jcrys * 10., 0.);
 		   G4ThreeVector position = G4ThreeVector(icrys * 10.,jcrys * 10.,0.);
-		   G4int c_num = (icrys)*(jcrys);
-		   new G4PVPlacement(
-			                 0,
-							 position,
-							 logicCryst,
-							 "crystal",
-							 calorLV,
-							 false,
-							 0,
-							 checkOverlaps);
+		   G4VPhysicalVolume* detector =
+		        new G4PVPlacement(
+			                       0,
+					       	   	   position,
+							       logicCryst,
+							       "crystal",
+							       calorLV,
+							       false,
+							       fNbOfChambers,
+							       checkOverlaps);
+		   fNbOfChambers--;
 	   }
-   }
+	 }
+  }
 #endif
 
                      
@@ -461,7 +513,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 
   //fScoringVolume = logicCryst;
 
-  return fPhysiWorld;
+  return physWorld;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
