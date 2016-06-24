@@ -71,8 +71,9 @@ void B1EventAction::EndOfEventAction(const G4Event* anEvent)
 	// print out hit information
 	// ====================================================================  
 	// for barrel calorimeter
-	T1BarrelCalSD* barrelcalSD = (T1BarrelCalSD*)SDManager->FindSensitiveDetector("/barrelCal");
-//		SDManager->FindSensitiveDetector("TrackerChamberSD");
+	//T1BarrelCalSD* barrelcalSD = (T1BarrelCalSD*)SDManager->FindSensitiveDetector("/barrelCal");
+    T1BarrelCalSD* barrelcalSD = (T1BarrelCalSD*)
+	    SDManager->FindSensitiveDetector("TrackerChamberSD");
 		
 		barrelcalSD-> PrintAll();
 
@@ -90,8 +91,8 @@ void B1EventAction::EndOfEventAction(const G4Event* anEvent)
 	// [ E0 E1 E2 E3 E4 E5 E6 E7 ] (deposit energy in each module in MeV)
 	static G4int idcal= -1;
 	if(idcal<0)
-	//	idcal = SDManager->GetCollectionID("TrackerChamberSD_HC"); 
-     idcal = SDManager-> GetCollectionID("/barrelCal_HC");
+	idcal = SDManager->GetCollectionID("TrackerChamberSD_HC"); 
+    // idcal = SDManager-> GetCollectionID("/barrelCal_HC");
 	      //idcal = SDManager->GetCollectionID("BarrelCal");
 		  //idcal = 0;
 	T1BarrelCalHitsCollection* hccal = (T1BarrelCalHitsCollection*)HCTE-> GetHC(idcal);

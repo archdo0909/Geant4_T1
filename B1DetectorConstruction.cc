@@ -93,7 +93,7 @@ void B1DetectorConstruction::DefineMaterials()
 
 G4VPhysicalVolume* B1DetectorConstruction::Construct()
 {
-#if 0
+#if 1
 	G4double a, z;
 	G4double density, temperature, pressure;
 	G4int nel;
@@ -110,9 +110,6 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4Material* Pb = 
 		new G4Material("Lead", z=82., a= 207.19*g/mole, density= 11.35*g/cm3);
 	
-	//Crystal
-	G4NistManager* nist = G4NistManager::Instance();
-	G4Material* cryst_mat   = nist->FindOrBuildMaterial("Lu2SiO5");
 
 	//Xenon gas
 	G4Material* Xenon = 
@@ -126,11 +123,6 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 
 	//--------- Sizes of the principal geometrical components (solids)  ---------
 
-	G4int ChamNum_x = 3;
-	G4int ChamNum_y = 3;
-	G4double SingleChamberWid = 1.*cm;
-	fChamberSpacing = 0.0;
-#if 0
 	fNbOfChambers = 5;
 	fChamberWidth = 20*cm;
 	fChamberSpacing = 80*cm;
@@ -140,29 +132,6 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 
 	fTargetMater  = Pb;
 	fChamberMater = Xenon;
-
-	fWorldLength= 1.2 *(fTargetLength+fTrackerLength);
-
-	G4double targetSize  = 0.5*fTargetLength;    // Half length of the Target  
-	G4double trackerSize = 0.5*fTrackerLength;   // Half length of the Tracker
-
-	//--------- Definitions of Solids, Logical Volumes, Physical Volumes ---------
-
-	//------------------------------ 
-	// World
-	//------------------------------ 
-
-	G4double HalfWorldLength = 0.5*fWorldLength;
-
-#endif
-	fNbOfChambers = ChamNum_x * ChamNum_y;
-	fChamberWidth = SingleChamberWid * ChamNum_x;
-
-	fTrackerLength = 100*mm; // Full length of Tracker
-	fTargetLength  = 5.0 * cm;                        // Full length of Target
-
-	fTargetMater  = Pb;
-	fChamberMater = cryst_mat;
 
 	fWorldLength= 1.2 *(fTargetLength+fTrackerLength);
 
@@ -194,8 +163,6 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		0,               // its mother  volume
 		false,           // no boolean operations
 		0);              // copy number
-
-#if 0
 
 	//------------------------------ 
 	// Target
@@ -241,19 +208,13 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	// An example of Parameterised volumes
 	// dummy values for G4Box -- modified by parameterised volume
 
-//	fSolidChamber = new G4Box("chamber", 100*cm, 100*cm, 10*cm); 
-	fSolidChamber = new G4Box("chamber", fChamberWidth, fChamberWidth,fTargetLength); 
-//	fLogicChamber = new G4LogicalVolume(fSolidChamber, fChamberMater,"Chamber",0,0,0);
+	fSolidChamber = new G4Box("chamber", 100*cm, 100*cm, 10*cm); 
 	fLogicChamber = new G4LogicalVolume(fSolidChamber, fChamberMater,"Chamber",0,0,0);
 
-	//G4double firstPosition = -trackerSize + 0.5*fChamberWidth;
+	G4double firstPosition = -trackerSize + 0.5*fChamberWidth;
 	//G4double firstPosition = 0.;
-	G4int Num_x;
-	G4int Num_y;
-	//G4double firstLength = fTrackerLength/10;
-	//G4double lastLength  = fTrackerLength;
-	G4double firstLength = 0;
-	G4double lastLength = ChamNum_y;
+	G4double firstLength = fTrackerLength/10;
+	G4double lastLength  = fTrackerLength;
 
 	G4VPVParameterisation* chamberParam = new ExP01ChamberParameterisation(  
 		fNbOfChambers,          // NoChambers 
@@ -315,9 +276,8 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	// G4double maxLength = 2*fTrackerLength, maxTime = 0.1*ns, minEkin = 10*MeV;
 	// logicTracker->SetUserLimits(new G4UserLimits(maxStep,maxLength,maxTime,
 	//                                               minEkin));
-#endif
 
-#if 1
+#if 0
   //Get nist material manager
   G4NistManager* nist = G4NistManager::Instance();
 
@@ -346,7 +306,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
   //G4double ring_R2 = (ring_R1+cryst_dZ)/cosdPhi;
 
   G4SDManager* SDman= G4SDManager::GetSDMpointer();
-  G4String SDname="/barrelCal";
+  G4String SDname="barrelCal";
   
   T1BarrelCalSD* barrelCalSD = new T1BarrelCalSD(SDname);
   SDman-> AddNewDetector(barrelCalSD);
@@ -511,9 +471,10 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	 // 0,                       //copy number
 	 // checkOverlaps);         // checking overlaps 
 
-  fScoringVolume = logicCryst;
+ // fScoringVolume = logicCryst;
 
-  return physWorld;
+ // return fphysWorld;
+   return fPhysiWorld;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
