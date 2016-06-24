@@ -415,7 +415,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
   //! Crystalに検出器を定義する
   logicCryst->SetSensitiveDetector(barrelCalSD);
 
-  while (fNbOfChambers != 0){
+ // while (fNbOfChambers != 0){
    for(int icrys = 0; icrys < X_cryst; icrys++)
    {
 	   for(int jcrys = 0; jcrys < Y_cryst; jcrys++)
@@ -441,12 +441,12 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 							       "crystal",
 							       calorLV,
 							       false,
-							       fNbOfChambers,
+							       0,
 							       checkOverlaps);
-		   fNbOfChambers--;
+		  // fNbOfChambers--;
 	   }
 	 }
-  }
+  //}
 #endif
 
                      
@@ -511,7 +511,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	 // 0,                       //copy number
 	 // checkOverlaps);         // checking overlaps 
 
-  //fScoringVolume = logicCryst;
+  fScoringVolume = logicCryst;
 
   return physWorld;
 }

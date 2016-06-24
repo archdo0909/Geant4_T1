@@ -52,7 +52,7 @@ static double dDefinition[5][6] =
 		20.0, 10.0, 10.0, 0.0, 0.0, 1.0
 	},
 	{
-		0.0, 10.0, 10.0, 0.0, 1.0, 0.0
+		0.0, 10.0, 10.0, 0.0, 0.0, 1.0
 	},
 	{
 		10.0, 10.0, 10.0, 0.0, 1.0, 1.0
@@ -80,11 +80,13 @@ B1PrimaryGeneratorAction::B1PrimaryGeneratorAction()
 	// default particle
 
 	G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
+	G4String particleName;
 	//G4ParticleDefinition* particle = particleTable->FindParticle("proton");
-	G4ParticleDefinition* particle = particleTable->FindParticle("gamma");
+	G4ParticleDefinition* particle 
+		= particleTable->FindParticle("gamma");
 	fParticleGun->SetParticleDefinition(particle);
-	fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,0.,1.));
-	fParticleGun->SetParticleEnergy(3.0*GeV);
+	fParticleGun->SetParticleMomentumDirection(G4ThreeVector(dDefinition[i][3],dDefinition[i][4],dDefinition[i][5]));
+	fParticleGun->SetParticleEnergy(6.*GeV);
 
 	i++;
 }
@@ -155,7 +157,7 @@ void B1PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   fParticleGun->SetParticleDefinition(particle);
   //fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,0.,1.));
   fParticleGun->SetParticleMomentumDirection(G4ThreeVector(dDefinition[i][3],dDefinition[i][4],dDefinition[i][5]));
-  fParticleGun->SetParticleEnergy(6.0*GeV);
+  fParticleGun->SetParticleEnergy(6.*GeV);
 
   fParticleGun->GeneratePrimaryVertex(anEvent);
 

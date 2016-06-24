@@ -145,7 +145,6 @@ G4bool T1BarrelCalSD::ProcessHits(G4Step* aStep,G4TouchableHistory*)
 	//////////////////////////////////////////////////////////////////////////
 
 #if 1
-
 	G4double edep = aStep->GetTotalEnergyDeposit();
 
 	if(edep==0.) return false;
