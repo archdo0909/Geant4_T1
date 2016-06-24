@@ -48,6 +48,9 @@
     <None Include="ExP01ChamberParameterisation.hh">
       <Filter>ヘッダー ファイル</Filter>
     </None>
+    <None Include="T1CellParameterisation.hh">
+      <Filter>ヘッダー ファイル</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="B1ActionInitialization.cc">
@@ -81,6 +84,9 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="ExP01ChamberParameterisation.cc">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="T1CellParameterisation.cc">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>

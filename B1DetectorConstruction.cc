@@ -52,7 +52,7 @@ static const double  twopi  = 2*pi;
 #include "G4UserLimits.hh"
 
 #include "T1BarrelCalSD.hh"
-#include "ExP01ChamberParameterisation.hh"
+#include "T1CellParameterisation.hh"
 #include <iostream>
 #include <string>
 #define NUM_CRYSTAL 64
@@ -93,7 +93,6 @@ void B1DetectorConstruction::DefineMaterials()
 
 G4VPhysicalVolume* B1DetectorConstruction::Construct()
 {
-#if 1
 	G4double a, z;
 	G4double density, temperature, pressure;
 	G4int nel;
@@ -109,12 +108,6 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	//Lead
 	G4Material* Pb = 
 		new G4Material("Lead", z=82., a= 207.19*g/mole, density= 11.35*g/cm3);
-	
-
-	//Xenon gas
-	G4Material* Xenon = 
-		new G4Material("XenonGas", z=54., a=131.29*g/mole, density= 5.458*mg/cm3,
-		kStateGas, temperature= 293.15*kelvin, pressure= 1*atmosphere);
 
 	// Print all the materials defined.
 	//
@@ -127,13 +120,12 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	fChamberWidth = 20*cm;
 	fChamberSpacing = 80*cm;
 
-	fTrackerLength = (fNbOfChambers+1)*fChamberSpacing; // Full length of Tracker
-	fTargetLength  = 5.0 * cm;                        // Full length of Target
+	fTrackerLength = 100.0 * mm;						  //FULL Length of detector Length
+	fTargetLength  = 1.0 * m;			                  // Full length of Target
 
-	fTargetMater  = Pb;
-	fChamberMater = Xenon;
+	fTargetMater  = Air;
 
-	fWorldLength= 1.2 *(fTargetLength+fTrackerLength);
+	fWorldLength= (fTargetLength+fTrackerLength);
 
 	G4double targetSize  = 0.5*fTargetLength;    // Half length of the Target  
 	G4double trackerSize = 0.5*fTrackerLength;   // Half length of the Tracker
@@ -144,6 +136,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	// World
 	//------------------------------ 
 
+	//fTrackerLength = 100mm + fTargetLength = 1.0m == 110cm
 	G4double HalfWorldLength = 0.5*fWorldLength;
 
 	fSolidWorld= new G4Box("world",HalfWorldLength,HalfWorldLength,HalfWorldLength);
@@ -168,7 +161,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	// Target
 	//------------------------------
 
-	G4ThreeVector positionTarget = G4ThreeVector(0,0,-(targetSize+trackerSize));
+	G4ThreeVector positionTarget = G4ThreeVector(0,0,0);
 
 	fSolidTarget = new G4Box("target",targetSize,targetSize,targetSize);
 	fLogicTarget = new G4LogicalVolume(fSolidTarget,fTargetMater,"Target",0,0,0);
@@ -182,83 +175,81 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 
 	G4cout << "Target is " << fTargetLength/cm << " cm of " 
 		<< fTargetMater->GetName() << G4endl;
+#if 0
+	////------------------------------ 
+	//// Tracker
+	////------------------------------
 
-#endif
+	//G4ThreeVector positionTracker = G4ThreeVector(0,0,0);
 
-	//------------------------------ 
-	// Tracker
-	//------------------------------
+	//fSolidTracker = new G4Box("tracker",trackerSize,trackerSize,trackerSize);
+	//fLogicTracker = new G4LogicalVolume(fSolidTracker , Air, "Tracker",0,0,0);  
+	//fPhysiTracker = new G4PVPlacement(0,              // no rotation
+	//	positionTracker, // at (x,y,z)
+	//	fLogicTracker,    // its logical volume
+	//	"Tracker",       // its name
+	//	fLogicWorld,      // its mother  volume
+	//	false,           // no boolean operations
+	//	0);              // copy number 
 
-	G4ThreeVector positionTracker = G4ThreeVector(0,0,0);
+	////------------------------------ 
+	//// Tracker segments
+	////------------------------------
+	//// 
+	//// An example of Parameterised volumes
+	//// dummy values for G4Box -- modified by parameterised volume
 
-	fSolidTracker = new G4Box("tracker",trackerSize,trackerSize,trackerSize);
-	fLogicTracker = new G4LogicalVolume(fSolidTracker , Air, "Tracker",0,0,0);  
-	fPhysiTracker = new G4PVPlacement(0,              // no rotation
-		positionTracker, // at (x,y,z)
-		fLogicTracker,    // its logical volume
-		"Tracker",       // its name
-		fLogicWorld,      // its mother  volume
-		false,           // no boolean operations
-		0);              // copy number 
+	//fSolidChamber = new G4Box("chamber", 100*cm, 100*cm, 10*cm); 
+	//fLogicChamber = new G4LogicalVolume(fSolidChamber, fChamberMater,"Chamber",0,0,0);
 
-	//------------------------------ 
-	// Tracker segments
-	//------------------------------
-	// 
-	// An example of Parameterised volumes
-	// dummy values for G4Box -- modified by parameterised volume
+	//G4double firstPosition = -trackerSize + 0.5*fChamberWidth;
+	////G4double firstPosition = 0.;
+	//G4double firstLength = fTrackerLength/10;
+	//G4double lastLength  = fTrackerLength;
 
-	fSolidChamber = new G4Box("chamber", 100*cm, 100*cm, 10*cm); 
-	fLogicChamber = new G4LogicalVolume(fSolidChamber, fChamberMater,"Chamber",0,0,0);
+	//G4VPVParameterisation* chamberParam = new ExP01ChamberParameterisation(  
+	//	fNbOfChambers,          // NoChambers 
+	//	firstPosition,         // Z of center of first 
+	//	fChamberSpacing,        // Z spacing of centers
+	//	fChamberWidth,          // Width Chamber 
+	//	firstLength,           // lengthInitial 
+	//	lastLength);           // lengthFinal
 
-	G4double firstPosition = -trackerSize + 0.5*fChamberWidth;
-	//G4double firstPosition = 0.;
-	G4double firstLength = fTrackerLength/10;
-	G4double lastLength  = fTrackerLength;
+	//// dummy value : kZAxis -- modified by parameterised volume
+	////
+	//fPhysiChamber = new G4PVParameterised(
+	//	"Chamber",       // their name
+	//	fLogicChamber,    // their logical volume
+	//	fLogicTracker,    // Mother logical volume
+	//	kZAxis,          // Are placed along this axis 
+	//	fNbOfChambers,    // Number of chambers
+	//	chamberParam);   // The parametrisation
 
-	G4VPVParameterisation* chamberParam = new ExP01ChamberParameterisation(  
-		fNbOfChambers,          // NoChambers 
-		firstPosition,         // Z of center of first 
-		fChamberSpacing,        // Z spacing of centers
-		fChamberWidth,          // Width Chamber 
-		firstLength,           // lengthInitial 
-		lastLength);           // lengthFinal
-
-	// dummy value : kZAxis -- modified by parameterised volume
-	//
-	fPhysiChamber = new G4PVParameterised(
-		"Chamber",       // their name
-		fLogicChamber,    // their logical volume
-		fLogicTracker,    // Mother logical volume
-		kZAxis,          // Are placed along this axis 
-		fNbOfChambers,    // Number of chambers
-		chamberParam);   // The parametrisation
-
-	G4cout << "There are " << fNbOfChambers << " chambers in the tracker region. "
-		<< "The chambers are " << fChamberWidth/mm << " mm of " 
-		<< fChamberMater->GetName() << "\n The distance between chamber is "
-		<< fChamberSpacing/cm << " cm" << G4endl;
+	//G4cout << "There are " << fNbOfChambers << " chambers in the tracker region. "
+	//	<< "The chambers are " << fChamberWidth/mm << " mm of " 
+	//	<< fChamberMater->GetName() << "\n The distance between chamber is "
+	//	<< fChamberSpacing/cm << " cm" << G4endl;
 
 	//------------------------------------------------ 
 	// Sensitive detectors
 	//------------------------------------------------ 
 
-	G4SDManager* SDman = G4SDManager::GetSDMpointer();
+//	G4SDManager* SDman = G4SDManager::GetSDMpointer();
 
-	G4String trackerChamberSDname = "TrackerChamberSD";
-	T1BarrelCalSD* aTrackerSD = new T1BarrelCalSD( trackerChamberSDname );
-	SDman->AddNewDetector( aTrackerSD );
-	fLogicChamber->SetSensitiveDetector( aTrackerSD );
+//	G4String trackerChamberSDname = "TrackerChamberSD";
+//	T1BarrelCalSD* aTrackerSD = new T1BarrelCalSD( trackerChamberSDname );
+//	SDman->AddNewDetector( aTrackerSD );
+//	fLogicChamber->SetSensitiveDetector( aTrackerSD );
 
 	//--------- Visualization attributes -------------------------------
 
-	G4VisAttributes* BoxVisAtt= new G4VisAttributes(G4Colour(1.0,1.0,1.0));
-	fLogicWorld  ->SetVisAttributes(BoxVisAtt);  
-	fLogicTarget ->SetVisAttributes(BoxVisAtt);
-	fLogicTracker->SetVisAttributes(BoxVisAtt);
+//	G4VisAttributes* BoxVisAtt= new G4VisAttributes(G4Colour(1.0,1.0,1.0));
+//	fLogicWorld  ->SetVisAttributes(BoxVisAtt);  
+//	fLogicTarget ->SetVisAttributes(BoxVisAtt);
+//	fLogicTracker->SetVisAttributes(BoxVisAtt);
 
-	G4VisAttributes* ChamberVisAtt = new G4VisAttributes(G4Colour(1.0,1.0,0.0));
-	fLogicChamber->SetVisAttributes(ChamberVisAtt);
+//	G4VisAttributes* ChamberVisAtt = new G4VisAttributes(G4Colour(1.0,1.0,0.0));
+//	fLogicChamber->SetVisAttributes(ChamberVisAtt);
 
 	//--------- example of User Limits -------------------------------
 
@@ -268,14 +259,57 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 
 	// Sets a max Step length in the tracker region, with G4StepLimiter
 	//
-	G4double maxStep = 0.5*fChamberWidth; 
-	fLogicTracker->SetUserLimits(new G4UserLimits(maxStep));
+//	G4double maxStep = 0.5*fChamberWidth; 
+//	fLogicTracker->SetUserLimits(new G4UserLimits(maxStep));
 
 	// Set additional contraints on the track, with G4UserSpecialCuts
 	//
 	// G4double maxLength = 2*fTrackerLength, maxTime = 0.1*ns, minEkin = 10*MeV;
 	// logicTracker->SetUserLimits(new G4UserLimits(maxStep,maxLength,maxTime,
 	//                                               minEkin));
+#endif
+
+	/////////////////////////////////////////////////////////////////
+	//Mother Volume
+	G4VSolid* calorimeterSolid = new G4Box("Calorimeter_Solid", // Name
+											4.*cm,                // x half length
+											4.*cm,                // y half length
+											5.*cm) ;             // z half length
+	G4LogicalVolume* calorimeterLogical =
+		new G4LogicalVolume(calorimeterSolid,       // Solid
+							Air,                    // Material
+							"Calorimeter_Logical"); // Name
+
+	new G4PVPlacement(0,                          // Rotation matrix pointer
+		              G4ThreeVector(0.,0.,50*cm), // Translation vector
+					  calorimeterLogical,         // Logical volume
+					  "Calorimeter_Physical",     // Name
+					  fLogicWorld,             // Mother volume
+		              false,                      // Unused boolean
+		              0);                         // Copy number     
+   
+	G4VSolid* cellSolid = new G4Box("Cell_Solid", // Name
+									5.*mm,         // x half length
+									5.*mm,         // y half length
+									5.*mm);      // z half length
+
+	G4NistManager* nist = G4NistManager::Instance();
+	G4Material* cryst_mat   = nist->FindOrBuildMaterial("Lu2SiO5");
+
+	G4LogicalVolume* cellLogical
+		= new G4LogicalVolume(cellSolid,       // Solid
+							  cryst_mat,       // Material
+							  "Cell_Logical"); // Name
+
+	G4VPVParameterisation* cellParam = new T1CellParameterisation(); 
+
+	new G4PVParameterised("Cell_Physical",    // Name
+		                  cellLogical,        // Logical volume
+						  calorimeterLogical, // Mother volume
+						  kXAxis,             // Axis    
+					      64,                // Number of replicas
+					      cellParam);         // Parameterisation
+
 
 #if 0
   //Get nist material manager
