@@ -36,12 +36,6 @@
     <None Include="B1SteppingAction.hh">
       <Filter>ヘッダー ファイル</Filter>
     </None>
-    <None Include="T1BarrelCalHit.hh">
-      <Filter>ヘッダー ファイル</Filter>
-    </None>
-    <None Include="T1BarrelCalSD.hh">
-      <Filter>ヘッダー ファイル</Filter>
-    </None>
     <None Include="RootIO.hh">
       <Filter>ヘッダー ファイル</Filter>
     </None>
@@ -49,6 +43,12 @@
       <Filter>ヘッダー ファイル</Filter>
     </None>
     <None Include="T1CellParameterisation.hh">
+      <Filter>ヘッダー ファイル</Filter>
+    </None>
+    <None Include="T1DetectorCalSD.hh">
+      <Filter>ヘッダー ファイル</Filter>
+    </None>
+    <None Include="T1DetectorCalSDHit.hh">
       <Filter>ヘッダー ファイル</Filter>
     </None>
   </ItemGroup>
@@ -77,16 +77,16 @@
     <ClCompile Include="exampleB1.cc">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="T1BarrelCalSD.cc">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="T1BarrelCalHit.cc">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="ExP01ChamberParameterisation.cc">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="T1CellParameterisation.cc">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="T1DetectorCalSD.cc">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="T1DetectorCalSDHit.cc">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>

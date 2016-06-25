@@ -51,7 +51,7 @@ static const double  twopi  = 2*pi;
 #include "G4VisAttributes.hh"
 #include "G4UserLimits.hh"
 
-#include "T1BarrelCalSD.hh"
+#include "T1DetectorCalSD.hh"
 #include "T1CellParameterisation.hh"
 #include <iostream>
 #include <string>
@@ -94,7 +94,7 @@ void B1DetectorConstruction::DefineMaterials()
 G4VPhysicalVolume* B1DetectorConstruction::Construct()
 {
 	G4double a, z;
-	G4double density, temperature, pressure;
+	G4double density;
 	G4int nel;
 
 	//Air
@@ -121,7 +121,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	fChamberSpacing = 80*cm;
 
 	fTrackerLength = 100.0 * mm;						  //FULL Length of detector Length
-	fTargetLength  = 1.0 * m;			                  // Full length of Target
+	fTargetLength  = 1. * m;			                  // Full length of Target
 
 	fTargetMater  = Air;
 
@@ -139,7 +139,8 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	//fTrackerLength = 100mm + fTargetLength = 1.0m == 110cm
 	G4double HalfWorldLength = 0.5*fWorldLength;
 
-	fSolidWorld= new G4Box("world",HalfWorldLength,HalfWorldLength,HalfWorldLength);
+	//fSolidWorld= new G4Box("world",HalfWorldLength,HalfWorldLength,HalfWorldLength);
+	fSolidWorld= new G4Box("world",10*cm,10*cm,10*cm);
 	fLogicWorld= new G4LogicalVolume( fSolidWorld,			//solid
 	                                  Air,				    //Material
 									  "World",				//name
@@ -157,24 +158,24 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		false,           // no boolean operations
 		0);              // copy number
 
-	//------------------------------ 
-	// Target
-	//------------------------------
+	////------------------------------ 
+	//// Target
+	////------------------------------
 
-	G4ThreeVector positionTarget = G4ThreeVector(0,0,0);
+	//G4ThreeVector positionTarget = G4ThreeVector(0,0,0);
 
-	fSolidTarget = new G4Box("target",targetSize,targetSize,targetSize);
-	fLogicTarget = new G4LogicalVolume(fSolidTarget,fTargetMater,"Target",0,0,0);
-	fPhysiTarget = new G4PVPlacement(0,               // no rotation
-		positionTarget,  // at (x,y,z)
-		fLogicTarget,     // its logical volume
-		"Target",        // its name
-		fLogicWorld,      // its mother  volume
-		false,           // no boolean operations
-		0);              // copy number 
+	//fSolidTarget = new G4Box("target",targetSize,targetSize,targetSize);
+	//fLogicTarget = new G4LogicalVolume(fSolidTarget,fTargetMater,"Target",0,0,0);
+	//fPhysiTarget = new G4PVPlacement(0,               // no rotation
+	//	positionTarget,  // at (x,y,z)
+	//	fLogicTarget,     // its logical volume
+	//	"Target",        // its name
+	//	fLogicWorld,      // its mother  volume
+	//	false,           // no boolean operations
+	//	0);              // copy number 
 
-	G4cout << "Target is " << fTargetLength/cm << " cm of " 
-		<< fTargetMater->GetName() << G4endl;
+	//G4cout << "Target is " << fTargetLength/cm << " cm of " 
+	//	<< fTargetMater->GetName() << G4endl;
 #if 0
 	////------------------------------ 
 	//// Tracker
@@ -281,7 +282,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 							"Calorimeter_Logical"); // Name
 
 	new G4PVPlacement(0,                          // Rotation matrix pointer
-		              G4ThreeVector(0.,0.,50*cm), // Translation vector
+		              G4ThreeVector(0.,0.,5*cm), // Translation vector
 					  calorimeterLogical,         // Logical volume
 					  "Calorimeter_Physical",     // Name
 					  fLogicWorld,             // Mother volume
@@ -442,72 +443,35 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	 }
   //}
 #endif
+   ////////////////////////////////////////////////////////////////////////
+   // HandsOn4: Defining sensitive detector
+   // Create a new T1CellParameterisation sensitive detector
+   G4VSensitiveDetector* monitor = new BeamTestSiliconMonitor("Monitor"); 
 
+   // Get pointer to detector manager
                      
-  ////
-  //// ring
-  ////
-  //G4double gap = 0.5*mm;
-  //G4double dX = cryst_dX - gap, dY = cryst_dY - gap;
+   // Register detector with manager
+   G4SDManager::GetSDMpointer()->AddNewDetector(monitor);
 
-  //G4Box* solidRing =
-	 // new G4Box("Ring", dX*8, dY/2, cryst_dZ/2);
+   // Attach detector to volume defining calorimeter cells
+   calorimeterLogical->SetSensitiveDetector(monitor);
 
-  //G4LogicalVolume* logicRing =                         
-	 // new G4LogicalVolume(solidRing,           //its solid
-	 // default_mat,         //its material
-	 // "Ring");             //its name
+   ////////////////////////////////////////////////////////////////////////
+   // Visualisation attributes
 
-  ////     
-  //// define crystal
-  ////
-  //
-  //G4Box* solidCryst = new G4Box("crystal", dX/2, dY/2, cryst_dZ/2);
+   // Invisible world volume.
+   //fLogicWorld->SetVisAttributes(G4VisAttributes::Invisible);
 
-  //G4LogicalVolume* logicCryst = 
-	 // new G4LogicalVolume(solidCryst,          //its solid
-	 // cryst_mat,           //its material
-	 // "CrystalLV");        //its name
+   // HandsOn4: Calorimeter attributes 
+   // Invisible calorimeter mother volume
+   //calorimeterLogical->SetVisAttributes(G4VisAttributes::Invisible);
 
-  //logicCryst->SetSensitiveDetector(barrelCalSD);
+   // Calorimeter cells - green with transparency
+   G4VisAttributes* calorimeterAttributes =
+	   new G4VisAttributes(G4Colour(0.0, 1.0, 0.0, 0.1));
+   calorimeterAttributes->SetForceSolid(true);
+   cellLogical->SetVisAttributes(calorimeterAttributes);
 
-  //// place crystals within a ring 
-  ////
-
-  //for (G4int icrys = 0; icrys < nb_cryst ; icrys++) {
-	 // G4double phi = 0;
-	 // G4RotationMatrix rotm  = G4RotationMatrix();
-	 // rotm.rotateY(0); 
-	 // rotm.rotateZ(phi);
-	 // G4ThreeVector uz = G4ThreeVector(std::cos(phi),  std::sin(phi),0.);     
-	 // G4ThreeVector position = (cryst_dZ)*uz*icrys - 0.5*cryst_dZ*uz*nb_cryst;
-	 // G4Transform3D transform = G4Transform3D(rotm,position);
-
-	 // new G4PVPlacement(transform,             //rotation,position
-		//  logicCryst,            //its logical volume
-		//  "crystal",             //its name
-		//  logicRing,             //its mother  volume
-		//  false,                 //no boolean operation
-		//  icrys,                 //copy number
-		//  checkOverlaps);       // checking overlaps 
-  //}
- 
-  ////
-  //// place detector in world
-  ////                    
-
-  //new G4PVPlacement(0,                       //no rotation
-	 // G4ThreeVector(0,0,5*cm),         //at (0,0,0)
-	 // logicRing,               //its logical volume
-	 // "Detector",              //its name
-	 // logicWorld,              //its mother  volume
-	 // false,                   //no boolean operation
-	 // 0,                       //copy number
-	 // checkOverlaps);         // checking overlaps 
-
- // fScoringVolume = logicCryst;
-
- // return fphysWorld;
    return fPhysiWorld;
 }
 

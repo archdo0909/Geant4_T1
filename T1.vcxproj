@@ -82,9 +82,9 @@
     <None Include="B1SteppingAction.hh" />
     <None Include="ExP01ChamberParameterisation.hh" />
     <None Include="RootIO.hh" />
-    <None Include="T1BarrelCalHit.hh" />
-    <None Include="T1BarrelCalSD.hh" />
     <None Include="T1CellParameterisation.hh" />
+    <None Include="T1DetectorCalSD.hh" />
+    <None Include="T1DetectorCalSDHit.hh" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="B1ActionInitialization.cc" />
@@ -96,9 +96,9 @@
     <ClCompile Include="B1SteppingAction.cc" />
     <ClCompile Include="exampleB1.cc" />
     <ClCompile Include="ExP01ChamberParameterisation.cc" />
-    <ClCompile Include="T1BarrelCalHit.cc" />
-    <ClCompile Include="T1BarrelCalSD.cc" />
     <ClCompile Include="T1CellParameterisation.cc" />
+    <ClCompile Include="T1DetectorCalSD.cc" />
+    <ClCompile Include="T1DetectorCalSDHit.cc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
