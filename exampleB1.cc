@@ -27,7 +27,7 @@
 //
 /// \file exampleB1.cc
 /// \brief Main program of the B1 example
-
+#include "BeamTestPhysicsList.hh"
 #include "B1DetectorConstruction.hh"
 #include "T1ActionInitialization.hh"
 #include "T1PrimaryGeneratorAction.hh"
@@ -71,7 +71,7 @@ int main(int argc,char** argv)
   //
   // Detector construction
   runManager->SetUserInitialization(new B1DetectorConstruction());
-
+  runManager->SetUserInitialization(new BeamTestPhysicsList);
   // Physics list
   G4VModularPhysicsList* physicsList = new QBBC;
   physicsList->SetVerboseLevel(1);

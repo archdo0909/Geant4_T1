@@ -39,8 +39,8 @@ public:
 	~BeamTestEventAction();
 
 	// Metohds
-	void BeginOfEventAction(const G4Event*);
-	void EndOfEventAction(const G4Event*);
+	void BeginOfEventAction(const G4Event* anEvent);
+	void EndOfEventAction(const G4Event* anEvent);
 
 	void AddEdep(G4double edep) {fEdep += edep;}
 

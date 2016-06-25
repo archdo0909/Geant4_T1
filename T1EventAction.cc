@@ -33,6 +33,8 @@
 #include "G4SDManager.hh"
 #include "G4SystemOfUnits.hh"
 
+extern std::ofstream ofs;
+
 BeamTestEventAction::BeamTestEventAction() {}
 
 BeamTestEventAction::~BeamTestEventAction() {}
@@ -71,8 +73,8 @@ void BeamTestEventAction::EndOfEventAction(const G4Event* event)
         }
      }
      G4cout<<"Energy deposited in calorimeter "<<totalEnergy/MeV<<" MeV"<<G4endl;
+	 ofs <<"Energy deposited in calorimeter "<<totalEnergy/MeV<<" MeV"<<G4endl;
   }
-  
 
   ////////////////////////////////////////////////////////////////////////
   // HandsOn4: Output code of Silicon Monitor Hits
@@ -80,12 +82,12 @@ void BeamTestEventAction::EndOfEventAction(const G4Event* event)
   {
      BeamTestSiliconMonitorHitsCollection* hitsCollection_monitor = 
         dynamic_cast<BeamTestSiliconMonitorHitsCollection*>(hitsCollectionOfThisEvent->GetHC(fHitsCollectionID_monitor));
-
       G4int numberOfHits = hitsCollection_monitor->GetSize();
       for ( int i = 0 ; i < numberOfHits ; i++ )
       {  
          BeamTestSiliconMonitorHit* aHit = (*hitsCollection_monitor)[i];   
-         G4cout << "Information of " << i+1 << " th Silicon Monitor Hit of this event." << G4endl; 
+         G4cout << "Information of " << i+1 << " th Silicon Monitor Hit of this event." << G4endl;
+		 ofs <<"Information of " << i+1 << " th Silicon Monitor Hit of this event."  <<G4endl; 
 /*
          G4cout << "Incidence Particle Name and Kinetic Energy " << aHit->GetIncidenceDefinition()->GetParticleName() 
                 << " " << aHit->GetIncidenceKineticEnergy()/MeV << " MeV" << G4endl; 
