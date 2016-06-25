@@ -29,7 +29,7 @@
 /// \brief Implementation of the B1RunAction class
 
 #include "B1RunAction.hh"
-#include "B1PrimaryGeneratorAction.hh"
+#include "T1PrimaryGeneratorAction.hh"
 #include "B1DetectorConstruction.hh"
 #include "B1Run.hh"
 
@@ -70,20 +70,20 @@ B1RunAction::B1RunAction()
   // Book histograms, ntuple
   //
 
-  // Creating histograms
-  analysisManager->CreateH1("1","Edep in absorber", 100, 0., 800*MeV);
-  analysisManager->CreateH1("2","Edep in gap", 100, 0., 100*MeV);
-  analysisManager->CreateH1("3","trackL in absorber", 100, 0., 1*m);
-  analysisManager->CreateH1("4","trackL in gap", 100, 0., 50*cm);
+  //// Creating histograms
+  //analysisManager->CreateH1("1","Edep in absorber", 100, 0., 800*MeV);
+  //analysisManager->CreateH1("2","Edep in gap", 100, 0., 100*MeV);
+  //analysisManager->CreateH1("3","trackL in absorber", 100, 0., 1*m);
+  //analysisManager->CreateH1("4","trackL in gap", 100, 0., 50*cm);
 
-  // Creating ntuple
-  //
-  analysisManager->CreateNtuple("B4", "Edep and TrackL");
-  analysisManager->CreateNtupleDColumn("Eabs");
-  analysisManager->CreateNtupleDColumn("Egap");
-  analysisManager->CreateNtupleDColumn("Labs");
-  analysisManager->CreateNtupleDColumn("Lgap");
-  analysisManager->FinishNtuple();
+  //// Creating ntuple
+  ////
+  //analysisManager->CreateNtuple("B4", "Edep and TrackL");
+  //analysisManager->CreateNtupleDColumn("Eabs");
+  //analysisManager->CreateNtupleDColumn("Egap");
+  //analysisManager->CreateNtupleDColumn("Labs");
+  //analysisManager->CreateNtupleDColumn("Lgap");
+  //analysisManager->FinishNtuple();
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -124,100 +124,103 @@ void B1RunAction::BeginOfRunAction(const G4Run*)
 
 void B1RunAction::EndOfRunAction(const G4Run* run)
 {
-  G4int nofEvents = run->GetNumberOfEvent();
-  if (nofEvents == 0) return;
-  
-  const B1Run* b1Run = static_cast<const B1Run*>(run);
-
-  // Compute dose
+  //G4int nofEvents = run->GetNumberOfEvent();
+  //if (nofEvents == 0) return;
   //
-  G4double edep  = b1Run->GetEdep();
-  G4double edep2 = b1Run->GetEdep2();
-  G4double rms = edep2 - edep*edep/nofEvents;
-  if (rms > 0.) rms = std::sqrt(rms); else rms = 0.;
+  //const B1Run* b1Run = static_cast<const B1Run*>(run);
 
-  const B1DetectorConstruction* detectorConstruction
-   = static_cast<const B1DetectorConstruction*>
-     (G4RunManager::GetRunManager()->GetUserDetectorConstruction());
-  //G4double mass = detectorConstruction->GetScoringVolume()->GetMass();
-  G4double dose = edep/1;
-  G4double rmsDose = rms/1;
+  //// Compute dose
+  ////
+  //G4double edep  = b1Run->GetEdep();
+  //G4double edep2 = b1Run->GetEdep2();
+  //G4double rms = edep2 - edep*edep/nofEvents;
+  //if (rms > 0.) rms = std::sqrt(rms); else rms = 0.;
 
-  // Run conditions
-  //  note: There is no primary generator action object for "master"
-  //        run manager for multi-threaded mode.
-  const B1PrimaryGeneratorAction* generatorAction
-   = static_cast<const B1PrimaryGeneratorAction*>
-     (G4RunManager::GetRunManager()->GetUserPrimaryGeneratorAction());
-  G4String runCondition;
-  if (generatorAction)
-  {
-    const G4ParticleGun* particleGun = generatorAction->GetParticleGun();
-    runCondition += particleGun->GetParticleDefinition()->GetParticleName();
-    runCondition += " of ";
-    G4double particleEnergy = particleGun->GetParticleEnergy();
-    runCondition += G4BestUnit(particleEnergy,"Energy");
-  }
-        
-  // Print
-  //  
-  if (IsMaster()) {
-    G4cout
-     << G4endl
-     << "--------------------End of Global Run-----------------------";
-  }
-  else {
-    G4cout
-     << G4endl
-     << "--------------------End of Local Run------------------------";
-  }
-  
-  G4cout
-     << G4endl
-     << " The run consists of " << nofEvents << " "<< runCondition
-     << G4endl
-     << " Dose in scoring volume : " 
-     << G4BestUnit(dose,"Dose") << " +- " << G4BestUnit(rmsDose,"Dose")
-     << G4endl
-     << "------------------------------------------------------------"
-     << G4endl
-     << G4endl;
+  //const B1DetectorConstruction* detectorConstruction
+  // = static_cast<const B1DetectorConstruction*>
+  //   (G4RunManager::GetRunManager()->GetUserDetectorConstruction());
+  ////G4double mass = detectorConstruction->GetScoringVolume()->GetMass();
+  //G4double dose = edep/1;
+  //G4double rmsDose = rms/1;
 
-  // print histogram statistics
+  //// Run conditions
+  ////  note: There is no primary generator action object for "master"
+  ////        run manager for multi-threaded mode.
+  ////const B1PrimaryGeneratorAction* generatorAction
+  // //= static_cast<const B1PrimaryGeneratorAction*>
+  //const BeamTestPrimaryGeneratorAction* generatorAction
+  //= static_cast<const BeamTestPrimaryGeneratorAction*>
+  //   (G4RunManager::GetRunManager()->GetUserPrimaryGeneratorAction());
+  //G4String runCondition;
+  //if (generatorAction)
+  //{
+  //  const G4ParticleGun* particleGun = generatorAction->Gun();
+  //  runCondition += particleGun->GetParticleDefinition()->GetParticleName();
+  //  runCondition += " of ";
+  //  G4double particleEnergy = particleGun->GetParticleEnergy();
+  //  runCondition += G4BestUnit(particleEnergy,"Energy");
+  //}
+  //      
+  //// Print
+  ////  
+  //if (IsMaster()) {
+  //  G4cout
+  //   << G4endl
+  //   << "--------------------End of Global Run-----------------------";
+  //}
+  //else {
+  //  G4cout
+  //   << G4endl
+  //   << "--------------------End of Local Run------------------------";
+  //}
   //
-  G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-  if ( analysisManager->GetH1(1) ) {
-	  G4cout << G4endl << " ----> print histograms statistic ";
-	  if(isMaster) {
-		  G4cout << "for the entire run " << G4endl << G4endl; 
-	  }
-	  else {
-		  G4cout << "for the local thread " << G4endl << G4endl; 
-	  }
+  //G4cout
+  //   << G4endl
+  //   << " The run consists of " << nofEvents << " "<< runCondition
+  //   << G4endl
+  //   << " Dose in scoring volume : " 
+  //   << G4BestUnit(dose,"Dose") << " +- " << G4BestUnit(rmsDose,"Dose")
+  //   << G4endl
+  //   << "------------------------------------------------------------"
+  //   << G4endl
+  //   << G4endl;
 
-	  G4cout << " EAbs : mean = " 
-		  << G4BestUnit(analysisManager->GetH1(1)->mean(), "Energy") 
-		  << " rms = " 
-		  << G4BestUnit(analysisManager->GetH1(1)->rms(),  "Energy") << G4endl;
+  //// print histogram statistics
+  ////
+  //G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+  //if ( analysisManager->GetH1(1) ) {
+	 // G4cout << G4endl << " ----> print histograms statistic ";
+	 // if(isMaster) {
+		//  G4cout << "for the entire run " << G4endl << G4endl; 
+	 // }
+	 // else {
+		//  G4cout << "for the local thread " << G4endl << G4endl; 
+	 // }
 
-	  G4cout << " EGap : mean = " 
-		  << G4BestUnit(analysisManager->GetH1(2)->mean(), "Energy") 
-		  << " rms = " 
-		  << G4BestUnit(analysisManager->GetH1(2)->rms(),  "Energy") << G4endl;
+	 // G4cout << " EAbs : mean = " 
+		//  << G4BestUnit(analysisManager->GetH1(1)->mean(), "Energy") 
+		//  << " rms = " 
+		//  << G4BestUnit(analysisManager->GetH1(1)->rms(),  "Energy") << G4endl;
 
-	  G4cout << " LAbs : mean = " 
-		  << G4BestUnit(analysisManager->GetH1(3)->mean(), "Length") 
-		  << " rms = " 
-		  << G4BestUnit(analysisManager->GetH1(3)->rms(),  "Length") << G4endl;
+	 // G4cout << " EGap : mean = " 
+		//  << G4BestUnit(analysisManager->GetH1(2)->mean(), "Energy") 
+		//  << " rms = " 
+		//  << G4BestUnit(analysisManager->GetH1(2)->rms(),  "Energy") << G4endl;
 
-	  G4cout << " LGap : mean = " 
-		  << G4BestUnit(analysisManager->GetH1(4)->mean(), "Length") 
-		  << " rms = " 
-		  << G4BestUnit(analysisManager->GetH1(4)->rms(),  "Length") << G4endl;
-  }
+	 // G4cout << " LAbs : mean = " 
+		//  << G4BestUnit(analysisManager->GetH1(3)->mean(), "Length") 
+		//  << " rms = " 
+		//  << G4BestUnit(analysisManager->GetH1(3)->rms(),  "Length") << G4endl;
+
+	 // G4cout << " LGap : mean = " 
+		//  << G4BestUnit(analysisManager->GetH1(4)->mean(), "Length") 
+		//  << " rms = " 
+		//  << G4BestUnit(analysisManager->GetH1(4)->rms(),  "Length") << G4endl;
+  //}
 
   // save histograms & ntuple
   //
+  G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
   analysisManager->Write();
   analysisManager->CloseFile();
 

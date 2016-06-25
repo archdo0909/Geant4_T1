@@ -29,8 +29,8 @@
 /// \brief Main program of the B1 example
 
 #include "B1DetectorConstruction.hh"
-#include "B1ActionInitialization.hh"
-
+#include "T1ActionInitialization.hh"
+#include "T1PrimaryGeneratorAction.hh"
 #ifdef G4MULTITHREADED
 #include "G4MTRunManager.hh"
 #else
@@ -78,7 +78,7 @@ int main(int argc,char** argv)
   runManager->SetUserInitialization(physicsList);
     
   // User action initialization
-  runManager->SetUserInitialization(new B1ActionInitialization());
+  runManager->SetUserInitialization(new T1ActionInitialization());
 
   // Initialize visualization
   //

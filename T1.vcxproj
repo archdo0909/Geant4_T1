@@ -73,32 +73,30 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="B1ActionInitialization.hh" />
     <None Include="B1DetectorConstruction.hh" />
-    <None Include="B1EventAction.hh" />
-    <None Include="B1PrimaryGeneratorAction.hh" />
     <None Include="B1Run.hh" />
     <None Include="B1RunAction.hh" />
-    <None Include="B1SteppingAction.hh" />
-    <None Include="ExP01ChamberParameterisation.hh" />
     <None Include="RootIO.hh" />
+    <None Include="T1ActionInitialization.hh" />
     <None Include="T1CellParameterisation.hh" />
     <None Include="T1DetectorCalSD.hh" />
     <None Include="T1DetectorCalSDHit.hh" />
+    <None Include="T1EventAction.hh" />
+    <None Include="T1PrimaryGeneratorAction.hh" />
+    <None Include="T1SteppingAction.hh" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="B1ActionInitialization.cc" />
     <ClCompile Include="B1DetectorConstruction.cc" />
-    <ClCompile Include="B1EventAction.cc" />
-    <ClCompile Include="B1PrimaryGeneratorAction.cc" />
     <ClCompile Include="B1Run.cc" />
     <ClCompile Include="B1RunAction.cc" />
-    <ClCompile Include="B1SteppingAction.cc" />
     <ClCompile Include="exampleB1.cc" />
-    <ClCompile Include="ExP01ChamberParameterisation.cc" />
+    <ClCompile Include="T1ActionInitialization.cc" />
     <ClCompile Include="T1CellParameterisation.cc" />
     <ClCompile Include="T1DetectorCalSD.cc" />
     <ClCompile Include="T1DetectorCalSDHit.cc" />
+    <ClCompile Include="T1EventAction.cc" />
+    <ClCompile Include="T1PrimaryGeneratorAction.cc" />
+    <ClCompile Include="T1SteppingAction.cc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

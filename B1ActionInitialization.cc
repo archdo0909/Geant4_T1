@@ -56,6 +56,7 @@ void B1ActionInitialization::BuildForMaster() const
 
 void B1ActionInitialization::Build() const
 {
+ 
   SetUserAction(new B1PrimaryGeneratorAction);
   SetUserAction(new B1RunAction);
   

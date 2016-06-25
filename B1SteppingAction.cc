@@ -29,7 +29,7 @@
 /// \brief Implementation of the B1SteppingAction class
 
 #include "B1SteppingAction.hh"
-#include "B1EventAction.hh"
+#include "T1EventAction.hh"
 #include "B1DetectorConstruction.hh"
 
 #include "G4Step.hh"

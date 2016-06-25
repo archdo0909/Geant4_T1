@@ -15,16 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="B1ActionInitialization.hh">
-      <Filter>ヘッダー ファイル</Filter>
-    </None>
     <None Include="B1DetectorConstruction.hh">
-      <Filter>ヘッダー ファイル</Filter>
-    </None>
-    <None Include="B1EventAction.hh">
-      <Filter>ヘッダー ファイル</Filter>
-    </None>
-    <None Include="B1PrimaryGeneratorAction.hh">
       <Filter>ヘッダー ファイル</Filter>
     </None>
     <None Include="B1Run.hh">
@@ -33,13 +24,7 @@
     <None Include="B1RunAction.hh">
       <Filter>ヘッダー ファイル</Filter>
     </None>
-    <None Include="B1SteppingAction.hh">
-      <Filter>ヘッダー ファイル</Filter>
-    </None>
     <None Include="RootIO.hh">
-      <Filter>ヘッダー ファイル</Filter>
-    </None>
-    <None Include="ExP01ChamberParameterisation.hh">
       <Filter>ヘッダー ファイル</Filter>
     </None>
     <None Include="T1CellParameterisation.hh">
@@ -51,18 +36,21 @@
     <None Include="T1DetectorCalSDHit.hh">
       <Filter>ヘッダー ファイル</Filter>
     </None>
+    <None Include="T1PrimaryGeneratorAction.hh">
+      <Filter>ヘッダー ファイル</Filter>
+    </None>
+    <None Include="T1EventAction.hh">
+      <Filter>ヘッダー ファイル</Filter>
+    </None>
+    <None Include="T1ActionInitialization.hh">
+      <Filter>ヘッダー ファイル</Filter>
+    </None>
+    <None Include="T1SteppingAction.hh">
+      <Filter>ヘッダー ファイル</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="B1ActionInitialization.cc">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="B1DetectorConstruction.cc">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="B1EventAction.cc">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="B1PrimaryGeneratorAction.cc">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="B1Run.cc">
@@ -71,13 +59,7 @@
     <ClCompile Include="B1RunAction.cc">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="B1SteppingAction.cc">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="exampleB1.cc">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="ExP01ChamberParameterisation.cc">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="T1CellParameterisation.cc">
@@ -87,6 +69,18 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="T1DetectorCalSDHit.cc">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="T1PrimaryGeneratorAction.cc">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="T1EventAction.cc">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="T1ActionInitialization.cc">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="T1SteppingAction.cc">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
