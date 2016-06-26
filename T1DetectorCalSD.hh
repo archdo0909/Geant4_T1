@@ -34,15 +34,15 @@ class G4HCofThisEvent;
 class G4TouchableHistory;
 class G4Step;
 
-class BeamTestSiliconMonitor : public G4VSensitiveDetector {
+class BeamTestEmCalorimeter : public G4VSensitiveDetector {
 
 public:
 
 	// Constructor
-	BeamTestSiliconMonitor(const G4String& name);
+	BeamTestEmCalorimeter(const G4String& name);
 
 	// Destructor
-	virtual ~BeamTestSiliconMonitor();
+	virtual ~BeamTestEmCalorimeter();
 
 	// Methods
 	virtual void Initialize(G4HCofThisEvent* hitsCollectionOfThisEvent);
@@ -54,7 +54,7 @@ public:
 private:
 
 	// Data members
-	BeamTestSiliconMonitorHitsCollection* fHitsCollection;
+	BeamTestEmCalorimeterHitsCollection* fHitsCollection;
 	G4int fHitsCollectionID;
 
 };

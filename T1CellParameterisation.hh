@@ -51,6 +51,7 @@ private:
 	// Data members
 	std::vector<G4double> xCell;
 	std::vector<G4double> yCell;
+	std::vector<G4double> zCell;
 
 };
 

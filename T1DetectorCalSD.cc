@@ -31,63 +31,104 @@
 #include "G4TouchableHistory.hh"
 #include "G4Track.hh"
 
-BeamTestSiliconMonitor::BeamTestSiliconMonitor(const G4String& name)
+BeamTestEmCalorimeter::BeamTestEmCalorimeter(const G4String& name)
 	:G4VSensitiveDetector(name)
 {
-	collectionName.insert( "MonitorCollection" );
+	collectionName.insert( "CalorimeterCollection" );
 	fHitsCollectionID = -1;
 }
 
-BeamTestSiliconMonitor::~BeamTestSiliconMonitor() {}
+BeamTestEmCalorimeter::~BeamTestEmCalorimeter() {}
 
-void BeamTestSiliconMonitor::Initialize(G4HCofThisEvent* hitsCollectionOfThisEvent)
+void BeamTestEmCalorimeter::Initialize(G4HCofThisEvent* hitsCollectionOfThisEvent)
 {
 	// HandsOn4: Creating hit collection
 	// Create a new collection
 	fHitsCollection =
-		new BeamTestSiliconMonitorHitsCollection(SensitiveDetectorName, collectionName[0]);
+		new BeamTestEmCalorimeterHitsCollection(SensitiveDetectorName, collectionName[0]);
 
-	if ( fHitsCollectionID < 0 )
+	if(fHitsCollectionID < 0)
 		fHitsCollectionID = G4SDManager::GetSDMpointer()->GetCollectionID(fHitsCollection);
 
 	// Add collection to the event
 	hitsCollectionOfThisEvent->AddHitsCollection(fHitsCollectionID, fHitsCollection);
 
+	// Initialise hits
+	G4int i(0);
+
+	for (i=0; i<128; i++) {
+		BeamTestEmCalorimeterHit* aHit = new BeamTestEmCalorimeterHit(i);
+		fHitsCollection->insert(aHit);
+	}
 }
 
-G4bool BeamTestSiliconMonitor::ProcessHits(G4Step* aStep, G4TouchableHistory*)
+G4bool BeamTestEmCalorimeter::ProcessHits(G4Step* aStep, G4TouchableHistory*)
 {
+#if 0
+	//// Limited by Geom Boundary?
+	//if ( aStep->GetPreStepPoint()->GetStepStatus() == fGeomBoundary )
+	//{
+	//	// Create Hit 
+	//	BeamTestSiliconMonitorHit* aHit = new BeamTestSiliconMonitorHit();
+	//	fHitsCollection->insert( aHit );
 
-	// Limited by Geom Boundary?
-	if ( aStep->GetPreStepPoint()->GetStepStatus() == fGeomBoundary )
-	{
-		// Create Hit 
-		BeamTestSiliconMonitorHit* aHit = new BeamTestSiliconMonitorHit();
-		fHitsCollection->insert( aHit );
+	//	// Get Transportaion Matrix
+	//	G4TouchableHistory* theTouchable = (G4TouchableHistory*)(aStep->GetPreStepPoint()->GetTouchable());
+	//	G4AffineTransform aTrans = theTouchable->GetHistory()->GetTopTransform();
+	//	aTrans.Invert();
 
-		// Get Transportaion Matrix
-		G4TouchableHistory* theTouchable = (G4TouchableHistory*)(aStep->GetPreStepPoint()->GetTouchable());
+	//	G4ThreeVector position = aTrans.NetRotation() * ( aStep->GetPreStepPoint()->GetPosition() - aTrans.NetTranslation() ); 
+	//	G4ThreeVector momentumD = aTrans.NetRotation() * aStep->GetPreStepPoint()->GetMomentumDirection();
+
+	//	G4ParticleDefinition* pd = aStep->GetTrack()->GetDefinition(); 
+	//	G4double ke = aStep->GetPreStepPoint()->GetKineticEnergy();
+
+	//	aHit->SetIncidenceDefinition(pd);
+	//	aHit->SetIncidenceKineticEnergy(ke);
+	//	aHit->SetIncidencePosition(position);
+	//	aHit->SetIncidenceMomentumDirection(momentumD);
+	//	
+	//}
+	//else 
+	//{
+	//	return true;
+	//}
+
+	//return true;
+#endif
+	// HandsOn4: Accumulating hit data
+	// Get energy deposited in this step
+	G4double depositedEnergy = aStep->GetTotalEnergyDeposit();
+	if (0 == depositedEnergy) return true;
+
+
+	// Get volume and copy number
+	G4StepPoint* preStepPoint = aStep->GetPreStepPoint();
+	G4TouchableHistory* theTouchable = (G4TouchableHistory*)(preStepPoint->GetTouchable());
+
+	G4VPhysicalVolume* thePhysical = theTouchable->GetVolume();
+	G4int copyNo = thePhysical->GetCopyNo();
+
+	// Get corresponding hit
+	BeamTestEmCalorimeterHit* aHit = (*fHitsCollection)[copyNo];
+
+	// Check to see if this is the first time the hit has been updated
+	if (!(aHit->GetLogicalVolume())) {
+
+		// Set volume information
+		aHit->SetLogicalVolume(thePhysical->GetLogicalVolume());
+
 		G4AffineTransform aTrans = theTouchable->GetHistory()->GetTopTransform();
 		aTrans.Invert();
 
-		G4ThreeVector position = aTrans.NetRotation() * ( aStep->GetPreStepPoint()->GetPosition() - aTrans.NetTranslation() ); 
-		G4ThreeVector momentumD = aTrans.NetRotation() * aStep->GetPreStepPoint()->GetMomentumDirection();
-
-		G4ParticleDefinition* pd = aStep->GetTrack()->GetDefinition(); 
-		G4double ke = aStep->GetPreStepPoint()->GetKineticEnergy();
-
-		aHit->SetIncidenceDefinition(pd);
-		aHit->SetIncidenceKineticEnergy(ke);
-		aHit->SetIncidencePosition(position);
-		aHit->SetIncidenceMomentumDirection(momentumD);
-		
-	}
-	else 
-	{
-		return true;
+		aHit->SetRotation(aTrans.NetRotation());
+		aHit->SetPosition(aTrans.NetTranslation());
 	}
 
+	// Accumulate energy deposition  
+	aHit->AddDepositedEnergy(depositedEnergy);
 	return true;
+
 }
 
-void BeamTestSiliconMonitor::EndOfEvent(G4HCofThisEvent*) {}
+void BeamTestEmCalorimeter::EndOfEvent(G4HCofThisEvent*) {}

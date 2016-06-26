@@ -32,6 +32,8 @@ static const double     pi  = 3.14159265358979323846;
 static const double  twopi  = 2*pi;
 
 #include "B1DetectorConstruction.hh"
+#include "T1DetectorCalSD.hh"
+#include "T1CellParameterisation.hh"
 
 #include "G4RunManager.hh"
 #include "G4NistManager.hh"
@@ -51,8 +53,6 @@ static const double  twopi  = 2*pi;
 #include "G4VisAttributes.hh"
 #include "G4UserLimits.hh"
 
-#include "T1DetectorCalSD.hh"
-#include "T1CellParameterisation.hh"
 #include <iostream>
 #include <string>
 #define NUM_CRYSTAL 64
@@ -64,7 +64,9 @@ static const double  twopi  = 2*pi;
 
 B1DetectorConstruction::B1DetectorConstruction()
 : G4VUserDetectorConstruction(),
-  fScoringVolume(0)
+  fScoringVolume(0),
+  fSolidWorld(0),
+  fLogicWorld(0)
 {
 	DefineMaterials();
 }
@@ -140,7 +142,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4double HalfWorldLength = 0.5*fWorldLength;
 
 	//fSolidWorld= new G4Box("world",HalfWorldLength,HalfWorldLength,HalfWorldLength);
-	fSolidWorld= new G4Box("world",10*cm,10*cm,10*cm);
+	fSolidWorld= new G4Box("world",7*cm,7*cm,7*cm);
 	fLogicWorld= new G4LogicalVolume( fSolidWorld,			//solid
 	                                  Air,				    //Material
 									  "World",				//name
@@ -275,27 +277,31 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4VSolid* calorimeterSolid = new G4Box("Calorimeter_Solid", // Name
 											4.*cm,                // x half length
 											4.*cm,                // y half length
-											5.*cm) ;             // z half length
+											50.*mm) ;             // z half length
+	////////////if there is any change, Go to parameterisation also /////////
+
 	G4LogicalVolume* calorimeterLogical =
 		new G4LogicalVolume(calorimeterSolid,       // Solid
 							Air,                    // Material
 							"Calorimeter_Logical"); // Name
 
 	new G4PVPlacement(0,                          // Rotation matrix pointer
-		              G4ThreeVector(0.,0.,5*cm), // Translation vector
+		              G4ThreeVector(0.,0.,10.*cm), // Translation vector
 					  calorimeterLogical,         // Logical volume
 					  "Calorimeter_Physical",     // Name
 					  fLogicWorld,             // Mother volume
 		              false,                      // Unused boolean
 		              0);                         // Copy number     
    
+
+
+	G4NistManager* nist = G4NistManager::Instance();
+	G4Material* cryst_mat   = nist->FindOrBuildMaterial("Lu2SiO5");
+
 	G4VSolid* cellSolid = new G4Box("Cell_Solid", // Name
 									5.*mm,         // x half length
 									5.*mm,         // y half length
 									5.*mm);      // z half length
-
-	G4NistManager* nist = G4NistManager::Instance();
-	G4Material* cryst_mat   = nist->FindOrBuildMaterial("Lu2SiO5");
 
 	G4LogicalVolume* cellLogical
 		= new G4LogicalVolume(cellSolid,       // Solid
@@ -308,8 +314,26 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		                  cellLogical,        // Logical volume
 						  calorimeterLogical, // Mother volume
 						  kXAxis,             // Axis    
-					      64,                // Number of replicas
+					      128,                // Number of replicas
 					      cellParam);         // Parameterisation
+
+	//G4VSolid* cellSolid2 = new G4Box("Cell_Solid", // Name
+	//	                             5.*mm,         // x half length
+	//	                             5.*mm,         // y half length
+	//	                             2.5*mm);      // z half length
+	//G4LogicalVolume* celllogical2
+	//	=new G4LogicalVolume(cellSolid2,
+	//	                     cryst_mat,
+	//						 "Cell_Logical2");
+
+	//G4VPVParameterisation* cellParam2 = new T1CellParameterisation(100.0);
+
+	//new G4PVParameterised("Cell_Physical",    // Name
+	//					  celllogical2,        // Logical volume
+	//					  calorimeterLogical, // Mother volume
+	//					  kXAxis,             // Axis    
+	//				      64,                // Number of replicas
+	//					  cellParam2);         // Parameterisation
 
 
 #if 0
@@ -446,15 +470,16 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
    ////////////////////////////////////////////////////////////////////////
    // HandsOn4: Defining sensitive detector
    // Create a new T1CellParameterisation sensitive detector
-   G4VSensitiveDetector* monitor = new BeamTestSiliconMonitor("Monitor"); 
+   G4VSensitiveDetector* detector = new BeamTestEmCalorimeter("Calorimeter"); 
 
    // Get pointer to detector manager
-                     
+   G4SDManager* SDman = G4SDManager::GetSDMpointer();
+
    // Register detector with manager
-   G4SDManager::GetSDMpointer()->AddNewDetector(monitor);
+   SDman->AddNewDetector(detector);
 
    // Attach detector to volume defining calorimeter cells
-   calorimeterLogical->SetSensitiveDetector(monitor);
+   cellLogical->SetSensitiveDetector(detector);
 
    ////////////////////////////////////////////////////////////////////////
    // Visualisation attributes
@@ -465,6 +490,11 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
    // HandsOn4: Calorimeter attributes 
    // Invisible calorimeter mother volume
    //calorimeterLogical->SetVisAttributes(G4VisAttributes::Invisible);
+
+   /* G4VisAttributes* calorimeterMotherAttributes =
+   new G4VisAttributes(G4Colour(0.0, 0.0, 0.0, 0.1));
+   calorimeterMotherAttributes->SetForceSolid(true);
+   calorimeterLogical->SetVisAttributes(calorimeterMotherAttributes);*/
 
    // Calorimeter cells - green with transparency
    G4VisAttributes* calorimeterAttributes =

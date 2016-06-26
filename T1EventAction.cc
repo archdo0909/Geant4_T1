@@ -45,7 +45,7 @@ void BeamTestEventAction::BeginOfEventAction(const G4Event*)
   fHitsCollectionID = SDman->GetCollectionID("CalorimeterCollection");
   ////////////////////////////////////////////////////////////////////////
   // HandsOn4: Getting code for HitsCollection of Silicon Monitor
-  fHitsCollectionID_monitor = SDman->GetCollectionID("MonitorCollection");
+  //fHitsCollectionID_monitor = SDman->GetCollectionID("MonitorCollection");
 }
 
 
@@ -57,45 +57,49 @@ void BeamTestEventAction::EndOfEventAction(const G4Event* event)
   if (fHitsCollectionID >= 0)
   {
 
-     BeamTestSiliconMonitorHitsCollection* hitsCollection = 
-       dynamic_cast<BeamTestSiliconMonitorHitsCollection*>(hitsCollectionOfThisEvent->GetHC(fHitsCollectionID));
+     BeamTestEmCalorimeterHitsCollection* hitsCollection = 
+       dynamic_cast<BeamTestEmCalorimeterHitsCollection*>(hitsCollectionOfThisEvent->GetHC(fHitsCollectionID));
   
      G4double totalEnergy = 0.;
   
      if ( 0 != hitsCollection ) {
         G4int i(0);
     
-        for ( i=0 ; i<100 ; i++ ) {
-           BeamTestSiliconMonitorHit* aHit = (*hitsCollection)[i];   
+        for ( i=0 ; i<128; i++ ) {    ////the number of i is crystal nums
+           BeamTestEmCalorimeterHit* aHit = (*hitsCollection)[i];   
            totalEnergy += aHit->GetDepositedEnergy();
-      
+
+		if(0 != aHit->GetDepositedEnergy()){
+		ofs<< i <<", "<< aHit->GetDepositedEnergy() <<", "<<aHit->GetPosition()<< G4endl;
           // aHit->Print();
+		}
+
         }
      }
      G4cout<<"Energy deposited in calorimeter "<<totalEnergy/MeV<<" MeV"<<G4endl;
-	 ofs <<"Energy deposited in calorimeter "<<totalEnergy/MeV<<" MeV"<<G4endl;
+	 //ofs <<"Energy deposited in calorimeter "<<totalEnergy/MeV<<" MeV"<<G4endl;
   }
 
   ////////////////////////////////////////////////////////////////////////
   // HandsOn4: Output code of Silicon Monitor Hits
-  if ( fHitsCollectionID_monitor >= 0 )
-  {
-     BeamTestSiliconMonitorHitsCollection* hitsCollection_monitor = 
-        dynamic_cast<BeamTestSiliconMonitorHitsCollection*>(hitsCollectionOfThisEvent->GetHC(fHitsCollectionID_monitor));
-      G4int numberOfHits = hitsCollection_monitor->GetSize();
-      for ( int i = 0 ; i < numberOfHits ; i++ )
-      {  
-         BeamTestSiliconMonitorHit* aHit = (*hitsCollection_monitor)[i];   
-         G4cout << "Information of " << i+1 << " th Silicon Monitor Hit of this event." << G4endl;
-		 ofs <<"Information of " << i+1 << " th Silicon Monitor Hit of this event."  <<G4endl; 
-/*
-         G4cout << "Incidence Particle Name and Kinetic Energy " << aHit->GetIncidenceDefinition()->GetParticleName() 
-                << " " << aHit->GetIncidenceKineticEnergy()/MeV << " MeV" << G4endl; 
-         G4cout << "Insidence position in silicon monitor "<<aHit->GetIncidencePosition()/mm << " in mm" << G4endl; 
-         G4cout << "Incidence Direction " << aHit->GetIncidenceMomentumDirection() << G4endl; 
-*/
-         aHit->Print();
-      }
-   }
+//  if ( fHitsCollectionID_monitor >= 0 )
+//  {
+//     BeamTestEmCalorimeterHit* hitsCollection_monitor = 
+//        dynamic_cast<BeamTestEmCalorimeterHit*>(hitsCollectionOfThisEvent->GetHC(fHitsCollectionID_monitor));
+//      G4int numberOfHits = hitsCollection_monitor->GetSize();
+//      for ( int i = 0 ; i < numberOfHits ; i++ )
+//      {  
+//         BeamTestEmCalorimeterHit* aHit = (*hitsCollection_monitor)[i];   
+//         G4cout << "Information of " << i+1 << " th Silicon Monitor Hit of this event." << G4endl;
+//		 ofs <<"Information of " << i+1 << " th Silicon Monitor Hit of this event."  <<G4endl; 
+///*
+//         G4cout << "Incidence Particle Name and Kinetic Energy " << aHit->GetIncidenceDefinition()->GetParticleName() 
+//                << " " << aHit->GetIncidenceKineticEnergy()/MeV << " MeV" << G4endl; 
+//         G4cout << "Insidence position in silicon monitor "<<aHit->GetIncidencePosition()/mm << " in mm" << G4endl; 
+//         G4cout << "Incidence Direction " << aHit->GetIncidenceMomentumDirection() << G4endl; 
+//*/
+//         aHit->Print();
+//      }
+//   }
 }
 

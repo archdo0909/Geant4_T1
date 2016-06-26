@@ -28,21 +28,26 @@
 #define T1DETECTORCALSDHIT_HH
 
 #include "G4Allocator.hh"
+#include "G4LogicalVolume.hh"
+#include "G4RotationMatrix.hh"
 #include "G4ThreeVector.hh"
 #include "G4THitsCollection.hh"
-#include "G4ParticleDefinition.hh"
+#include "G4Transform3D.hh"
 #include "G4VHit.hh"
 
-class BeamTestSiliconMonitorHit : public G4VHit {
+class G4AttDef;
+class G4AttValue;
+
+class BeamTestEmCalorimeterHit : public G4VHit {
 
 public:
 
 	// Constructors
-	BeamTestSiliconMonitorHit();
-	BeamTestSiliconMonitorHit(G4int id);
+	BeamTestEmCalorimeterHit();
+	BeamTestEmCalorimeterHit(G4int id);
 
 	// Destructor
-	virtual ~BeamTestSiliconMonitorHit();
+	virtual ~BeamTestEmCalorimeterHit();
 
 	inline void *operator new(size_t);
 	inline void operator delete(void *aHit);
@@ -50,50 +55,52 @@ public:
 	// Methods
 	virtual void Draw();
 
+	virtual const std::map<G4String,G4AttDef>* GetAttDefs() const;
+	virtual std::vector<G4AttValue>* CreateAttValues() const;
+
 	virtual void Print();
 
-	// Incidence Information 
-	inline void SetIncidenceDefinition(G4ParticleDefinition* pd) {fIPD = pd;}
-	inline G4ParticleDefinition* GetIncidenceDefinition() const {return fIPD;}
-
-	inline void SetIncidenceKineticEnergy(G4double e) {fIKEnergy = e;}
-	inline G4double GetIncidenceKineticEnergy() const {return fIKEnergy;}
-
+	// Deposited energy
 	inline void AddDepositedEnergy(G4double energy) {fDepositedEnergy += energy;}
 	inline G4double GetDepositedEnergy() const {return fDepositedEnergy;}
 
-	inline void SetIncidencePosition(G4ThreeVector position) {fIPosition = position;}
-	inline G4ThreeVector GetIncidencePosition() const {return fIPosition;}
+	// Position vector
+	inline void SetPosition(G4ThreeVector position) {fPosition = position;}
+	inline G4ThreeVector GetPosition() const {return fPosition;}
 
-	inline void SetIncidenceMomentumDirection(G4ThreeVector momentum) {fIMomentumD = momentum;}
-	inline G4ThreeVector GetIncidenceMomentumDirection() const {return fIMomentumD;}
+	// Rotation matrix
+	inline void SetRotation(G4RotationMatrix rotation) {fRotation = rotation;}
+	inline G4RotationMatrix GetRotation() const {return fRotation;}
+
+	// Logical volume
+	inline void SetLogicalVolume(G4LogicalVolume* volume) {pLogicalVolume = volume;}
+	inline const G4LogicalVolume* GetLogicalVolume() const {return pLogicalVolume;}
 
 private:
 
 	// Data members
 	G4int fCellID;
-	G4ParticleDefinition* fIPD;
 	G4double fDepositedEnergy;
-	G4double fIKEnergy;
-	G4ThreeVector fIPosition;
-	G4ThreeVector fIMomentumD;
+	G4ThreeVector fPosition;
+	G4RotationMatrix fRotation;
+	const G4LogicalVolume* pLogicalVolume;
 
 };
 
-typedef G4THitsCollection<BeamTestSiliconMonitorHit> BeamTestSiliconMonitorHitsCollection;
+typedef G4THitsCollection<BeamTestEmCalorimeterHit> BeamTestEmCalorimeterHitsCollection;
 
-extern G4Allocator<BeamTestSiliconMonitorHit> BeamTestSiliconMonitorHitAllocator;
+extern G4Allocator<BeamTestEmCalorimeterHit> BeamTestEmCalorimeterHitAllocator;
 
-inline void* BeamTestSiliconMonitorHit::operator new(size_t)
+inline void* BeamTestEmCalorimeterHit::operator new(size_t)
 {
 	void* aHit;
-	aHit = (void*)BeamTestSiliconMonitorHitAllocator.MallocSingle();
+	aHit = (void*)BeamTestEmCalorimeterHitAllocator.MallocSingle();
 	return aHit;
 }
 
-inline void BeamTestSiliconMonitorHit::operator delete(void* aHit)
+inline void BeamTestEmCalorimeterHit::operator delete(void* aHit)
 {
-	BeamTestSiliconMonitorHitAllocator.FreeSingle((BeamTestSiliconMonitorHit*) aHit);
+	BeamTestEmCalorimeterHitAllocator.FreeSingle((BeamTestEmCalorimeterHit*) aHit);
 }
 
 #endif

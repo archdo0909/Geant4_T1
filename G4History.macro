@@ -62,12 +62,3 @@
 /vis/viewer/set/autoRefresh true
 /vis/viewer/refresh
 /vis/verbose warnings
-/gun/energy 500 MeV
-/gun/particle gamma
-/control/execute
-/gun/particle gamma
-/gun/energy 500 MeV
-/gun/position 0 0 -4 m
-/gun/direction 0 0 -1
-/control/execute macros/gunGamma500.mac
-/control/execute macros/run.mac

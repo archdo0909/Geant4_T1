@@ -79,8 +79,6 @@
     <None Include="BeamTestPhysicsList.hh" />
     <None Include="RootIO.hh" />
     <None Include="T1ActionInitialization.hh" />
-    <None Include="T1BarrelCalHit.hh" />
-    <None Include="T1BarrelCalSD.hh" />
     <None Include="T1CellParameterisation.hh" />
     <None Include="T1DetectorCalSD.hh" />
     <None Include="T1DetectorCalSDHit.hh" />
@@ -95,8 +93,6 @@
     <ClCompile Include="BeamTestPhysicsList.cc" />
     <ClCompile Include="exampleB1.cc" />
     <ClCompile Include="T1ActionInitialization.cc" />
-    <ClCompile Include="T1BarrelCalHit.cc" />
-    <ClCompile Include="T1BarrelCalSD.cc" />
     <ClCompile Include="T1CellParameterisation.cc" />
     <ClCompile Include="T1DetectorCalSD.cc" />
     <ClCompile Include="T1DetectorCalSDHit.cc" />
