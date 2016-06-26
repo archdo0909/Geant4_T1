@@ -64,12 +64,12 @@ void BeamTestPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 	G4ThreeVector g1direction =  G4RandomDirection();
 	G4ThreeVector g2direction = G4RandomDirection();
 
-	particleGun->SetParticleEnergy(1.33*MeV);
+	/*particleGun->SetParticleEnergy(1.33*MeV);
 	particleGun->SetParticlePosition(G4ThreeVector(0.*cm,0.*cm,0.*cm));
 	particleGun->SetParticleMomentumDirection(g1direction);
-	particleGun->GeneratePrimaryVertex(anEvent);
+	particleGun->GeneratePrimaryVertex(anEvent);*/
 
-	particleGun->SetParticleEnergy(1.17*MeV);
+	particleGun->SetParticleEnergy(3.0*MeV);
 	particleGun->SetParticlePosition(G4ThreeVector(0.*cm,0.*cm,0.*cm));
 	particleGun->SetParticleMomentumDirection(g2direction);
 	particleGun->GeneratePrimaryVertex(anEvent);
