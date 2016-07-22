@@ -65,18 +65,19 @@ void BeamTestEventAction::EndOfEventAction(const G4Event* event)
      if ( 0 != hitsCollection ) {
         G4int i(0);
     
-        for ( i=0 ; i<128; i++ ) {    ////the number of i is crystal nums
+        for ( i=0 ; i<1200; i++ ) {    ////the number of i is crystal nums
            BeamTestEmCalorimeterHit* aHit = (*hitsCollection)[i];   
            totalEnergy += aHit->GetDepositedEnergy();
 
 		if(0 != aHit->GetDepositedEnergy()){
 		ofs<< i <<", "<< aHit->GetDepositedEnergy() <<", "<<aHit->GetPosition()<< G4endl;
           // aHit->Print();
+		G4cout<<"Hit "<<i<<G4endl;
 		}
 
         }
      }
-     G4cout<<"Energy deposited in calorimeter "<<totalEnergy/MeV<<" MeV"<<G4endl;
+     //G4cout<<"Energy deposited in calorimeter "<<totalEnergy/MeV<<" MeV"<<G4endl;
 	 //ofs <<"Energy deposited in calorimeter "<<totalEnergy/MeV<<" MeV"<<G4endl;
   }
 

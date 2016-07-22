@@ -42,51 +42,78 @@ class ExP01DetectorMessenger;
 
 /// Detector construction class to define materials and geometry.
 
+//class B1DetectorConstruction : public G4VUserDetectorConstruction
+//{
+//  public:
+//    B1DetectorConstruction();
+//    virtual ~B1DetectorConstruction();
+//
+//    virtual G4VPhysicalVolume* Construct();
+//	virtual void ConstructSDandField();
+//    
+//    G4LogicalVolume* GetScoringVolume() const { return fScoringVolume; }
+//
+//	void DefineMaterials();
+//
+//  protected:
+//    G4LogicalVolume*  fScoringVolume;
+//
+//private:
+//	G4Box*             fSolidWorld;    // pointer to the solid envelope 
+//	G4LogicalVolume*   fLogicWorld;    // pointer to the logical envelope
+//	G4VPhysicalVolume* fPhysiWorld;    // pointer to the physical envelope
+//
+//	G4Box*             fSolidTarget;   // pointer to the solid Target
+//	G4LogicalVolume*   fLogicTarget;   // pointer to the logical Target
+//	G4VPhysicalVolume* fPhysiTarget;   // pointer to the physical Target
+//
+//	G4Box*             fSolidTracker;  // pointer to the solid Tracker
+//	G4LogicalVolume*   fLogicTracker;  // pointer to the logical Tracker
+//	G4VPhysicalVolume* fPhysiTracker;  // pointer to the physical Tracker
+//
+//	G4Box*             fSolidChamber;  // pointer to the solid Chamber
+//	G4LogicalVolume*   fLogicChamber;  // pointer to the logical Chamber
+//	G4VPhysicalVolume* fPhysiChamber;  // pointer to the physical Chamber
+//
+//	G4Material*         fTargetMater;  // pointer to the target  material
+//	G4Material*         fChamberMater; // pointer to the chamber material
+//
+//	G4double fWorldLength;            // Full length of the world volume
+//	G4double fTargetLength;           // Full length of Target
+//	G4double fTrackerLength;          // Full length of Tracker
+//	G4int    fNbOfChambers;            // Nb of chambers in the tracker region
+//	G4double fChamberWidth;            // width of the chambers
+//	G4double fChamberSpacing;          // distance between chambers
+//};
+//
+////....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+
 class B1DetectorConstruction : public G4VUserDetectorConstruction
 {
-  public:
-    B1DetectorConstruction();
-    virtual ~B1DetectorConstruction();
+public:
+	B1DetectorConstruction();
+	virtual ~B1DetectorConstruction();
 
-    virtual G4VPhysicalVolume* Construct();
-	virtual void ConstructSDandField();
-    
-    G4LogicalVolume* GetScoringVolume() const { return fScoringVolume; }
+	virtual G4VPhysicalVolume* Construct();
 
-	void DefineMaterials();
+	G4LogicalVolume* GetScoringVolume() const { return fScoringVolume; }
 
-  protected:
-    G4LogicalVolume*  fScoringVolume;
+protected:
+	G4LogicalVolume*  fScoringVolume;
 
 private:
-	G4Box*             fSolidWorld;    // pointer to the solid envelope 
-	G4LogicalVolume*   fLogicWorld;    // pointer to the logical envelope
-	G4VPhysicalVolume* fPhysiWorld;    // pointer to the physical envelope
+	void constructVessels(G4LogicalVolume* pMotherVolume, G4Material* pMaterial);
+	void constructWalls(G4LogicalVolume* pMotherVolume);
+	void constructCalorimeter(G4LogicalVolume* pMotherVolume, G4Material* pMaterial, int nNum);    
 
-	G4Box*             fSolidTarget;   // pointer to the solid Target
-	G4LogicalVolume*   fLogicTarget;   // pointer to the logical Target
-	G4VPhysicalVolume* fPhysiTarget;   // pointer to the physical Target
-
-	G4Box*             fSolidTracker;  // pointer to the solid Tracker
-	G4LogicalVolume*   fLogicTracker;  // pointer to the logical Tracker
-	G4VPhysicalVolume* fPhysiTracker;  // pointer to the physical Tracker
-
-	G4Box*             fSolidChamber;  // pointer to the solid Chamber
-	G4LogicalVolume*   fLogicChamber;  // pointer to the logical Chamber
-	G4VPhysicalVolume* fPhysiChamber;  // pointer to the physical Chamber
-
-	G4Material*         fTargetMater;  // pointer to the target  material
-	G4Material*         fChamberMater; // pointer to the chamber material
-
-	G4double fWorldLength;            // Full length of the world volume
-	G4double fTargetLength;           // Full length of Target
-	G4double fTrackerLength;          // Full length of Tracker
-	G4int    fNbOfChambers;            // Nb of chambers in the tracker region
-	G4double fChamberWidth;            // width of the chambers
-	G4double fChamberSpacing;          // distance between chambers
+	G4Material* makeVesselMaterial(void);
+	G4Material* makePassingMaterial(void);
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+
 
 #endif
 

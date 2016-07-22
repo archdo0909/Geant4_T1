@@ -51,6 +51,9 @@
     <None Include="BeamTestPhysicsList.hh">
       <Filter>ヘッダー ファイル</Filter>
     </None>
+    <None Include="RandomDirection.hh">
+      <Filter>ヘッダー ファイル</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="B1DetectorConstruction.cc">

@@ -56,7 +56,7 @@ void BeamTestEmCalorimeter::Initialize(G4HCofThisEvent* hitsCollectionOfThisEven
 	// Initialise hits
 	G4int i(0);
 
-	for (i=0; i<128; i++) {
+	for (i=0; i<1200; i++) {
 		BeamTestEmCalorimeterHit* aHit = new BeamTestEmCalorimeterHit(i);
 		fHitsCollection->insert(aHit);
 	}

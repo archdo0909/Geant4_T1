@@ -77,6 +77,7 @@
     <None Include="B1Run.hh" />
     <None Include="B1RunAction.hh" />
     <None Include="BeamTestPhysicsList.hh" />
+    <None Include="RandomDirection.hh" />
     <None Include="RootIO.hh" />
     <None Include="T1ActionInitialization.hh" />
     <None Include="T1CellParameterisation.hh" />

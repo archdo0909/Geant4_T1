@@ -38,7 +38,9 @@ class T1CellParameterisation : public G4VPVParameterisation {
 public:
 
 	// Constructor
-	T1CellParameterisation();
+	//T1CellParameterisation();
+	T1CellParameterisation(int nRow, int nColumn);
+
 
 	// Destructor
 	virtual ~T1CellParameterisation();

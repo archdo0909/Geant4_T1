@@ -33,7 +33,7 @@
 #include "G4ParticleTable.hh"
 #include "G4SystemOfUnits.hh"
 #include "G4RandomDirection.hh"
-
+#include "RandomDirection.hh"
 G4ParticleGun* BeamTestPrimaryGeneratorAction::particleGun(0);
 
 BeamTestPrimaryGeneratorAction::BeamTestPrimaryGeneratorAction()
@@ -62,15 +62,37 @@ void BeamTestPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 	//particleGun->GeneratePrimaryVertex(anEvent);
 
 	G4ThreeVector g1direction =  G4RandomDirection();
-	G4ThreeVector g2direction = G4RandomDirection();
+	G4ThreeVector g2direction = RandomDirection();
 
 	/*particleGun->SetParticleEnergy(1.33*MeV);
-	particleGun->SetParticlePosition(G4ThreeVector(0.*cm,0.*cm,0.*cm));
+	particleGun->SetParticlePosition(G4ThreeVector(3.*cm,3.*cm,0.*cm));
 	particleGun->SetParticleMomentumDirection(g1direction);
 	particleGun->GeneratePrimaryVertex(anEvent);*/
 
-	particleGun->SetParticleEnergy(3.0*MeV);
+	particleGun->SetParticleEnergy(1.176*MeV);   /////Cs-137 
 	particleGun->SetParticlePosition(G4ThreeVector(0.*cm,0.*cm,0.*cm));
 	particleGun->SetParticleMomentumDirection(g2direction);
 	particleGun->GeneratePrimaryVertex(anEvent);
+
+	//particleGun->SetParticleEnergy(1.176*MeV);   /////Cs-137
+	//particleGun->SetParticlePosition(G4ThreeVector(1.5*m,1.5*m,0.*cm));
+	//particleGun->SetParticleMomentumDirection(g2direction);
+	//particleGun->GeneratePrimaryVertex(anEvent);
+
+	//particleGun->SetParticleEnergy(1.176*MeV);   /////Cs-137
+	//particleGun->SetParticlePosition(G4ThreeVector(-1.5*m,-1.5*m,0.*cm));
+	//particleGun->SetParticleMomentumDirection(g2direction);
+	//particleGun->GeneratePrimaryVertex(anEvent);
+
+	//particleGun->SetParticleEnergy(1.176*MeV);   /////Cs-137
+	//particleGun->SetParticlePosition(G4ThreeVector(1.5*m,-1.5*m,0.*cm));
+	//particleGun->SetParticleMomentumDirection(g2direction);
+	//particleGun->GeneratePrimaryVertex(anEvent);
+
+	//particleGun->SetParticleEnergy(1.176*MeV);   /////Cs-137
+	//particleGun->SetParticlePosition(G4ThreeVector(-1.5*m,1.5*m,0.*cm));
+	//particleGun->SetParticleMomentumDirection(g2direction);
+	//particleGun->GeneratePrimaryVertex(anEvent);
+
+
 }

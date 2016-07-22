@@ -42,6 +42,7 @@ static const double  twopi  = 2*pi;
 //#include "G4Cons.hh"
 //#include "G4Orb.hh"
 #include "G4Sphere.hh"
+#include "G4Cons.hh"
 #include "G4Trd.hh"
 #include "G4LogicalVolume.hh"
 #include "G4PVPlacement.hh"
@@ -57,7 +58,7 @@ static const double  twopi  = 2*pi;
 #include <string>
 #define NUM_CRYSTAL 64
 
-
+#if 0 ///////////////////////////////Version 1
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 //T1original
@@ -272,6 +273,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	//                                               minEkin));
 #endif
 
+#if 1
 	/////////////////////////////////////////////////////////////////
 	//Mother Volume
 	G4VSolid* calorimeterSolid = new G4Box("Calorimeter_Solid", // Name
@@ -285,8 +287,12 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 							Air,                    // Material
 							"Calorimeter_Logical"); // Name
 
-	new G4PVPlacement(0,                          // Rotation matrix pointer
-		              G4ThreeVector(0.,0.,10.*cm), // Translation vector
+	G4RotationMatrix rotm  = G4RotationMatrix();
+	rotm.rotateY(0*deg); 
+	G4ThreeVector position = G4ThreeVector(0.*cm,0.*cm,10.*cm);
+	G4Transform3D transform = G4Transform3D(rotm,position);
+	new G4PVPlacement(transform,                          // Rotation matrix pointer
+		               // Translation vector
 					  calorimeterLogical,         // Logical volume
 					  "Calorimeter_Physical",     // Name
 					  fLogicWorld,             // Mother volume
@@ -334,7 +340,9 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	//					  kXAxis,             // Axis    
 	//				      64,                // Number of replicas
 	//					  cellParam2);         // Parameterisation
-
+#endif
+#if 1
+#endif
 
 #if 0
   //Get nist material manager
@@ -489,7 +497,11 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 
    // HandsOn4: Calorimeter attributes 
    // Invisible calorimeter mother volume
-   //calorimeterLogical->SetVisAttributes(G4VisAttributes::Invisible);
+   G4VisAttributes* calorimeterAttributes =
+	   new G4VisAttributes(G4Colour(1.0, 0.0, 0.0, 1.0));
+   calorimeterAttributes->SetVisibility(false);
+   calorimeterLogical->SetVisAttributes(calorimeterAttributes);
+   
 
    /* G4VisAttributes* calorimeterMotherAttributes =
    new G4VisAttributes(G4Colour(0.0, 0.0, 0.0, 0.1));
@@ -497,10 +509,11 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
    calorimeterLogical->SetVisAttributes(calorimeterMotherAttributes);*/
 
    // Calorimeter cells - green with transparency
-   G4VisAttributes* calorimeterAttributes =
-	   new G4VisAttributes(G4Colour(0.0, 1.0, 0.0, 0.1));
-   calorimeterAttributes->SetForceSolid(true);
-   cellLogical->SetVisAttributes(calorimeterAttributes);
+   G4VisAttributes* cellAttributes =
+	   new G4VisAttributes(G4Colour(1.0, 0.0, 0.0, 0.1));
+   //cellAttributes->SetForceSolid(true);
+   cellAttributes->SetForceWireframe(true) ;
+   cellLogical->SetVisAttributes(cellAttributes);
 
    return fPhysiWorld;
 }
@@ -511,3 +524,406 @@ void B1DetectorConstruction::ConstructSDandField()
 {
 
 }
+#endif
+
+#if 1 ////////// Version
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+B1DetectorConstruction::B1DetectorConstruction()
+: G4VUserDetectorConstruction(),
+  fScoringVolume(0)
+{ }
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+B1DetectorConstruction::~B1DetectorConstruction()
+{ }
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+G4VPhysicalVolume* B1DetectorConstruction::Construct()
+{  
+  // Get nist material manager
+  G4NistManager* nist = G4NistManager::Instance();
+
+  // Envelope parameters
+  //
+  G4double env_sizeXY = 30*m, env_sizeZ = 10*m;
+  G4Material* env_mat = nist->FindOrBuildMaterial("G4_AIR");
+  
+   
+  // Option to switch on/off checking of volumes overlaps
+  //
+  G4bool checkOverlaps = true;
+
+  //     
+  // World
+  //
+  G4double world_sizeXY = 1.2 * env_sizeXY;
+  G4double world_sizeZ  = 1.2 * env_sizeZ;
+  G4Material* world_mat = nist->FindOrBuildMaterial("G4_AIR");
+  
+  G4ThreeVector position;
+  G4RotationMatrix rotm;
+  position = G4ThreeVector(0,0,0);
+  rotm.rotateZ(45*deg); 
+
+  G4Transform3D transform1 = G4Transform3D(rotm,position); 
+
+  G4Box* solidWorld =    
+    new G4Box("World",                       //its name
+       0.5*world_sizeXY, 0.5*world_sizeXY, 0.5*world_sizeZ);     //its size
+      
+  G4LogicalVolume* logicWorld =                         
+    new G4LogicalVolume(solidWorld,          //its solid
+                        world_mat,           //its material
+                        "World");            //its name
+                                   
+  G4VPhysicalVolume* physWorld = 
+    new G4PVPlacement(0,
+					  G4ThreeVector(),	//at (0,0,0)
+                      logicWorld,            //its logical volume
+                      "World",               //its name
+                      0,                     //its mother  volume
+                      false,                 //no boolean operation
+                      0,                     //copy number
+                      checkOverlaps);        //overlaps checking
+
+  //     
+  // Envelope
+  //  
+  G4Box* solidEnv =    
+    new G4Box("Envelope",                    //its name
+        0.5*env_sizeXY, 0.5*env_sizeXY, 0.5*env_sizeZ); //its size
+      
+  G4LogicalVolume* logicEnv =                         
+    new G4LogicalVolume(solidEnv,            //its solid
+                        env_mat,             //its material
+                        "Envelope");         //its name
+               
+  new G4PVPlacement(0,                       //no rotation
+                    G4ThreeVector(),         //at (0,0,0)
+                    logicEnv,                //its logical volume
+                    "Envelope",              //its name
+                    logicWorld,              //its mother  volume
+                    false,                   //no boolean operation
+                    0,                       //copy number
+                    checkOverlaps);          //overlaps checking
+ 
+
+  //
+  // Select Material for pressure vessel
+  //
+  G4Material* mat_vessel = makeVesselMaterial();
+  //G4Material* mat_vessel = makePassingMaterial();
+ 
+  //
+  // Construct vesselss
+  //
+  constructVessels(logicEnv, mat_vessel);
+          
+  //
+  // Construct walls
+  //
+  //constructWalls(logicEnv);
+
+  //
+  // Construct calorimeter
+  //
+  //constructCalorimeter(logicEnv, env_mat, 0);
+  //constructCalorimeter(logicEnv, env_mat, 1);
+  //constructCalorimeter(logicEnv, env_mat, 2);
+  constructCalorimeter(logicEnv, env_mat, 3);
+
+  // Set Shape2 as scoring volume
+  //
+  fScoringVolume = logicEnv;
+
+  //
+  //always return the physical World
+  //
+  return physWorld;
+}
+
+G4Material* B1DetectorConstruction::makeVesselMaterial(void)
+{
+  G4String name;             // a=mass of a mole;
+  G4double a, z, density;            // z=mean number of protons;  
+  G4int ncomponents;
+  G4double fractionmass;
+ 
+
+  // Material definition of "Carbon steel" for pressure vessel
+  G4Element* C = new G4Element("Carbon", "C", z= 6., a= 12.01*g/mole);
+  G4Element* Fe = new G4Element("Iron", "Fe", z= 26., a= 56.0*g/mole);
+  G4Element* Mn = new G4Element("Manganese", "Mn", z= 25., a= 54.9*g/mole);
+  G4Element* P = new G4Element("P", "Phosphorous", z= 15., a= 30.0*g/mole);
+  G4Element* S = new G4Element("S", "Sulfur", z= 16., a= 32.07*g/mole);
+
+  density = 7.87 * g/cm3;
+  G4Material* pMaterial = new G4Material(name="CarbonSteel", density, ncomponents=5);
+  pMaterial->AddElement(C, fractionmass = 0.2);
+  pMaterial->AddElement(Fe, fractionmass = 0.9911);
+  pMaterial->AddElement(Mn, fractionmass = 0.6);
+  pMaterial->AddElement(P, fractionmass = 0.04);
+  pMaterial->AddElement(S, fractionmass = 0.05);
+
+  
+
+  return pMaterial;
+}
+
+G4Material* B1DetectorConstruction::makePassingMaterial(void)
+{
+  // Get nist material manager
+  G4NistManager* nist = G4NistManager::Instance();
+
+  G4Material* pMaterial = nist->FindOrBuildMaterial("G4_A-150_TISSUE");
+ 
+  return pMaterial;
+}
+
+void B1DetectorConstruction::constructCalorimeter(G4LogicalVolume* pMotherVolume, G4Material* pMaterial, int nNum)
+{
+  double calorimeter_sizeX = 6.0 * m;
+  double calorimeter_sizeY = 5.0 * mm;
+  double calorimeter_sizeZ = 5.0 * mm;
+  
+  // Solid of Calorimeter
+  G4VSolid* calorimeterSolid = new G4Box("Calorimeter_Solid", calorimeter_sizeX, calorimeter_sizeY, calorimeter_sizeZ);
+
+  // Define logical volume of calorimeter
+  G4LogicalVolume* calorimeterLigical = new G4LogicalVolume( calorimeterSolid, pMaterial, "Calorimeter_Logical");
+
+  // Set position
+  G4ThreeVector position;
+  G4RotationMatrix rotm;
+  switch(nNum)
+  {
+  case 0: position = G4ThreeVector( 0.0, 6.0 * m, 0.0 ); break;
+  case 1: position = G4ThreeVector( 0.0, -6.0 * m, 0.0 ); break;
+  case 2: position = G4ThreeVector( 6.0 * m, 0.0 * m, 0.0 ); rotm.rotateZ(90*deg); break;
+  case 3: position = G4ThreeVector( -6.0 * m, 0.0 * m, 0.0 ); rotm.rotateZ(270*deg); break;
+  }
+  G4Transform3D transform = G4Transform3D(rotm,position);
+
+  G4NistManager* man = G4NistManager::Instance();
+  G4bool isotopes = false;
+
+  G4Element*  O = man->FindOrBuildElement("O" , isotopes); 
+  G4Element* Si = man->FindOrBuildElement("Si", isotopes);
+  G4Element* Lu = man->FindOrBuildElement("Lu", isotopes);  
+
+  G4Material* LSO = new G4Material("Lu2SiO5", 7.4*g/cm3, 3);
+  LSO->AddElement(Lu, 2);
+  LSO->AddElement(Si, 1);
+  LSO->AddElement(O , 5); 
+
+
+  G4NistManager* nist = G4NistManager::Instance();
+  G4Material* cryst_mat = nist->FindOrBuildMaterial("Lu2SiO5");
+
+  G4VSolid* cellSolid = new G4Box("Cell_Solid", 5.*mm, 5.*mm, 5.*mm);
+
+  G4LogicalVolume* cellLogical = new G4LogicalVolume(cellSolid, cryst_mat, "Cell_Logical");
+  
+  int nNumOfRowForCell = 1;
+  int nNumOfColumnForCell = 1200;  /////DetectorCalSD also should be modified 
+
+  G4VPVParameterisation* cellParam = new T1CellParameterisation(nNumOfRowForCell, nNumOfColumnForCell);
+
+  new G4PVParameterised("Cell_Physical", cellLogical, calorimeterLigical, kXAxis, nNumOfRowForCell*nNumOfColumnForCell, cellParam);
+
+  // Place calorimeter
+  new G4PVPlacement(transform,
+                    calorimeterLigical,
+                    "Calorimeter_Physical",
+                    pMotherVolume,
+                    false,
+                    0);
+
+  // Create a new T1CellParameterisation sensitive detector
+   G4VSensitiveDetector* detector = new BeamTestEmCalorimeter("Calorimeter"); 
+
+  // Get pointer to detector manager
+   G4SDManager* SDman = G4SDManager::GetSDMpointer();
+
+  // Register detector with manager
+   SDman->AddNewDetector(detector);
+
+   // Attach detector to volume defining calorimeter cells
+   cellLogical->SetSensitiveDetector(detector);
+  
+
+  // Calorimeter cells - green with transparency
+   G4VisAttributes* calorimeterAttributes =
+	   new G4VisAttributes(G4Colour(1.0, 0.0, 0.0, 0.1));
+   calorimeterAttributes->SetForceSolid(true);
+   cellLogical->SetVisAttributes(calorimeterAttributes);
+
+   //calorimeterLigical->SetVisAttributes(G4VisAttributes::Invisible);
+}
+
+void B1DetectorConstruction::constructVessels(G4LogicalVolume* pMotherVolume, G4Material* pMaterial)
+{
+  // Option to switch on/off checking of volumes overlaps
+  //
+  G4bool checkOverlaps = true;
+   G4NistManager* nist = G4NistManager::Instance();
+  G4Material* Concrete = nist->FindOrBuildMaterial("G4_AIR"); 
+
+  //     
+  // Pressure Vessel 1
+  //  
+  G4ThreeVector pos1 = G4ThreeVector(0, 0, 0);
+        
+  // Conical section shape       
+  G4double shape1_rmina =  2.4*m, shape1_rmaxa = 2.56*m;
+  G4double shape1_rminb =  2.4*m, shape1_rmaxb = 2.56*m;
+  G4double shape1_hz = 2.*m;
+  G4double shape1_phimin = 0.*deg, shape1_phimax = 360.*deg;
+  G4Cons* solidShape1 =    
+    new G4Cons("PV1", 
+    shape1_rmina, shape1_rmaxa, shape1_rminb, shape1_rmaxb, shape1_hz,
+    shape1_phimin, shape1_phimax);
+                      
+  G4LogicalVolume* logicShape1 =                         
+    new G4LogicalVolume(solidShape1,         //its solid
+                        Concrete,          //its material
+                        "PV1");           //its name
+               
+  new G4PVPlacement(0,                       //no rotation
+                    pos1,                    //at position
+                    logicShape1,             //its logical volume
+                    "PV1",                //its name
+                    pMotherVolume,                //its mother  volume
+                    false,                   //no boolean operation
+                    0,                       //copy number
+                    checkOverlaps);          //overlaps checking
+
+
+  //     
+  // Pressure Vessel 2
+  //  
+  G4ThreeVector pos2 = G4ThreeVector(0, 0, 0);
+        
+  // Conical section shape       
+  G4double shape2_rmina =  9.0*m, shape2_rmaxa = 9.16*m;
+  G4double shape2_rminb =  9.0*m, shape2_rmaxb = 9.16*m;
+  G4double shape2_hz = 2.*m;
+  G4double shape2_phimin = 0.*deg, shape2_phimax = 360.*deg;
+  G4Cons* solidShape2 =    
+    new G4Cons("PV2", 
+    shape2_rmina, shape2_rmaxa, shape2_rminb, shape2_rmaxb, shape2_hz,
+    shape2_phimin, shape2_phimax);
+                      
+  G4LogicalVolume* logicShape2 =                         
+    new G4LogicalVolume(solidShape2,         //its solid
+                        pMaterial,          //its material
+                        "PV2");           //its name
+               
+  new G4PVPlacement(0,                       //no rotation
+                    pos2,                    //at position
+                    logicShape2,             //its logical volume
+                    "PV2",                //its name
+                    pMotherVolume,                //its mother  volume
+                    false,                   //no boolean operation
+                    0,                       //copy number
+                    checkOverlaps);          //overlaps checking
+}
+
+void B1DetectorConstruction::constructWalls(G4LogicalVolume* logicEnv)
+{
+  // Option to switch on/off checking of volumes overlaps
+  //
+  G4bool checkOverlaps = true;
+
+  G4Material* mat_wall = makeVesselMaterial();
+
+  //
+  // Wall 1
+  //
+  G4double wall_sizeX = 13*m;
+  G4double wall_sizeY = 0.5*m;
+  G4double wall_sizeZ  = 2*m;
+  G4ThreeVector pos_wall1 = G4ThreeVector(0, 13.5*m, 0);
+
+  G4Box* solidWall = new G4Box("WALL", //its name
+        		        wall_sizeX, wall_sizeY, wall_sizeZ); //its size
+
+  
+  G4LogicalVolume* logicWall = new G4LogicalVolume(solidWall,         //its solid
+                                                   mat_wall,          //its material
+                                                   "WALL");           //its name
+               
+  new G4PVPlacement(0,                       //no rotation
+                    pos_wall1,                    //at position
+                    logicWall,             //its logical volume
+                    "WALL1",                //its name
+                    logicEnv,                //its mother  volume
+                    false,                   //no boolean operation
+                    0,                       //copy number
+                    checkOverlaps);          //overlaps checking
+
+  //
+  // Wall 2
+  //
+  G4ThreeVector pos_wall2 = G4ThreeVector(0, -13.5*m, 0);
+               
+  new G4PVPlacement(0,                       //no rotation
+                    pos_wall2,                    //at position
+                    logicWall,             //its logical volume
+                    "WALL2",                //its name
+                    logicEnv,                //its mother  volume
+                    false,                   //no boolean operation
+                    0,                       //copy number
+                    checkOverlaps);          //overlaps checking
+
+  //
+  // Wall 3
+  //
+  G4double wall_sizeX2 = 0.5*m;
+  G4double wall_sizeY2 = 14*m;
+  G4double wall_sizeZ2  = 2*m;
+
+  G4ThreeVector pos_wall3 = G4ThreeVector(13.5*m, 0*m, 0*m);
+
+  G4Box* solidWall2 = new G4Box("WALL2", //its name
+        		        wall_sizeX2, wall_sizeY2, wall_sizeZ2); //its size
+
+  
+  G4LogicalVolume* logicWall2 = new G4LogicalVolume(solidWall2,         //its solid
+                                                   mat_wall,          //its material
+                                                   "WALL2");           //its name
+
+  new G4PVPlacement(0,                       //no rotation
+                    pos_wall3,                    //at position
+                    logicWall2,             //its logical volume
+                    "WALL3",                //its name
+                    logicEnv,                //its mother  volume
+                    false,                   //no boolean operation
+                    0,                       //copy number
+                    checkOverlaps);          //overlaps checking
+
+  //
+  // Wall 4
+  //
+
+  G4ThreeVector pos_wall4 = G4ThreeVector(-13.5*m, 0*m, 0*m);
+
+  new G4PVPlacement(0,                       //no rotation
+                    pos_wall4,                    //at position
+                    logicWall2,             //its logical volume
+                    "WALL4",                //its name
+                    logicEnv,                //its mother  volume
+                    false,                   //no boolean operation
+                    0,                       //copy number
+                    checkOverlaps);          //overlaps checking
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+
+
+
+#endif
