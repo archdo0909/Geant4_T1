@@ -630,10 +630,10 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
   //
   // Construct calorimeter
   //
-  //constructCalorimeter(logicEnv, env_mat, 0);
+  constructCalorimeter(logicEnv, env_mat, 0);
   //constructCalorimeter(logicEnv, env_mat, 1);
   //constructCalorimeter(logicEnv, env_mat, 2);
-  constructCalorimeter(logicEnv, env_mat, 3);
+  //constructCalorimeter(logicEnv, env_mat, 3);
 
   // Set Shape2 as scoring volume
   //
@@ -770,7 +770,7 @@ void B1DetectorConstruction::constructVessels(G4LogicalVolume* pMotherVolume, G4
   //
   G4bool checkOverlaps = true;
    G4NistManager* nist = G4NistManager::Instance();
-  G4Material* Concrete = nist->FindOrBuildMaterial("G4_AIR"); 
+  G4Material* Concrete = nist->FindOrBuildMaterial("G4_CONCRETE"); 
 
   //     
   // Pressure Vessel 1

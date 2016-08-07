@@ -70,7 +70,8 @@ void BeamTestEventAction::EndOfEventAction(const G4Event* event)
            totalEnergy += aHit->GetDepositedEnergy();
 
 		if(0 != aHit->GetDepositedEnergy()){
-		ofs<< i <<", "<< aHit->GetDepositedEnergy() <<", "<<aHit->GetPosition()<< G4endl;
+		//ofs<< i <<", "<< aHit->GetDepositedEnergy() <<", "<<aHit->GetPosition()<< G4endl;
+			ofs<< i << ", " <<aHit->GetDepositedEnergy() <<", "<<aHit->GetPosition()<<G4endl;
           // aHit->Print();
 		G4cout<<"Hit "<<i<<G4endl;
 		}

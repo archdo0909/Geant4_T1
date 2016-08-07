@@ -76,10 +76,15 @@ public:
 	inline void SetLogicalVolume(G4LogicalVolume* volume) {pLogicalVolume = volume;}
 	inline const G4LogicalVolume* GetLogicalVolume() const {return pLogicalVolume;}
 
+	//Strip Num
+	inline void SetStripNo(G4int strip){stripNo=strip;}
+	inline G4int GetStripNo(){return stripNo;}
+
 private:
 
 	// Data members
 	G4int fCellID;
+	G4int stripNo;
 	G4double fDepositedEnergy;
 	G4ThreeVector fPosition;
 	G4RotationMatrix fRotation;

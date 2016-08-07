@@ -63,5 +63,174 @@
 /vis/viewer/set/autoRefresh true
 /vis/viewer/refresh
 /vis/verbose warnings
-/run/beamOn 5000
+/run/beamOn 100
 /vis/scene/notifyHandlers scene-0
+/vis/open OGLS
+/vis/sceneHandler/create OGLS
+/vis/sceneHandler/attach
+/vis/viewer/create ! ! 600
+/vis/viewer/refresh
+/run/beamOn 5
+/vis/reviewKeptEvents
+/vis/viewer/rebuild
+/vis/viewer/refresh
+/vis/viewer/flush
+/vis/viewer/refresh viewer-1
+/vis/viewer/update viewer-1
+/vis/viewer/rebuild
+/vis/viewer/refresh
+/vis/viewer/flush
+/vis/viewer/refresh viewer-1
+/vis/viewer/update viewer-1
+/vis/viewer/rebuild
+/vis/viewer/refresh
+/vis/viewer/flush
+/vis/viewer/refresh viewer-1
+/vis/viewer/update viewer-1
+/vis/viewer/rebuild
+/vis/viewer/refresh
+/vis/viewer/flush
+/vis/viewer/refresh viewer-1
+/vis/viewer/update viewer-1
+/vis/viewer/rebuild
+/vis/viewer/refresh
+/vis/viewer/flush
+/vis/viewer/refresh viewer-1
+/vis/viewer/update viewer-1
+/run/beamOn 100
+/vis/reviewKeptEvents
+/vis/viewer/rebuild
+/vis/viewer/refresh
+/vis/viewer/flush
+/vis/viewer/refresh viewer-1
+/vis/viewer/update viewer-1
+/vis/viewer/rebuild
+/vis/viewer/refresh
+/vis/viewer/flush
+/vis/viewer/refresh viewer-1
+/vis/viewer/update viewer-1
+/vis/viewer/rebuild
+/vis/viewer/refresh
+/vis/viewer/flush
+/vis/viewer/refresh viewer-1
+/vis/viewer/update viewer-1
+/vis/viewer/rebuild
+/vis/viewer/refresh
+/vis/viewer/flush
+/vis/viewer/refresh viewer-1
+/vis/viewer/update viewer-1
+/vis/viewer/rebuild
+/vis/viewer/refresh
+/vis/viewer/flush
+/vis/viewer/refresh viewer-1
+/vis/viewer/update viewer-1
+/vis/viewer/rebuild
+/vis/viewer/refresh
+/vis/viewer/flush
+/vis/viewer/refresh viewer-1
+/vis/viewer/update viewer-1
+/vis/viewer/rebuild
+/vis/viewer/refresh
+/vis/viewer/flush
+/vis/viewer/refresh viewer-1
+/vis/viewer/update viewer-1
+/vis/viewer/rebuild
+/vis/viewer/refresh
+/vis/viewer/flush
+/vis/viewer/refresh viewer-1
+/vis/viewer/update viewer-1
+/vis/viewer/rebuild
+/vis/viewer/refresh
+/vis/viewer/flush
+/vis/viewer/refresh viewer-1
+/vis/viewer/update viewer-1
+/vis/viewer/rebuild
+/vis/viewer/refresh
+/vis/viewer/flush
+/vis/viewer/refresh viewer-1
+/vis/viewer/update viewer-1
+/vis/viewer/rebuild
+/vis/viewer/refresh
+/vis/viewer/flush
+/vis/viewer/refresh viewer-1
+/vis/viewer/update viewer-1
+/vis/viewer/rebuild
+/vis/viewer/refresh
+/vis/viewer/flush
+/vis/viewer/refresh viewer-1
+/vis/viewer/update viewer-1
+/vis/viewer/rebuild
+/vis/viewer/refresh
+/vis/viewer/flush
+/vis/viewer/refresh viewer-1
+/vis/viewer/update viewer-1
+/vis/viewer/rebuild
+/vis/viewer/refresh
+/vis/viewer/flush
+/vis/viewer/refresh viewer-1
+/vis/viewer/update viewer-1
+/vis/viewer/rebuild
+/vis/viewer/refresh
+/vis/viewer/flush
+/vis/viewer/refresh viewer-1
+/vis/viewer/update viewer-1
+/vis/viewer/rebuild
+/vis/viewer/refresh
+/vis/viewer/flush
+/vis/viewer/refresh viewer-1
+/vis/viewer/update viewer-1
+/vis/viewer/rebuild
+/vis/viewer/refresh
+/vis/viewer/flush
+/vis/viewer/refresh viewer-1
+/vis/viewer/update viewer-1
+/vis/viewer/rebuild
+/vis/viewer/refresh
+/vis/viewer/flush
+/vis/viewer/refresh viewer-1
+/vis/viewer/update viewer-1
+/vis/viewer/rebuild
+/vis/viewer/refresh
+/vis/viewer/flush
+/vis/viewer/refresh viewer-1
+/vis/viewer/update viewer-1
+/vis/viewer/rebuild
+/vis/viewer/refresh
+/vis/viewer/flush
+/vis/viewer/refresh viewer-1
+/vis/viewer/update viewer-1
+/vis/viewer/rebuild
+/vis/viewer/refresh
+/vis/viewer/flush
+/vis/viewer/refresh viewer-1
+/vis/viewer/update viewer-1
+/vis/viewer/rebuild
+/vis/viewer/refresh
+/vis/viewer/flush
+/vis/viewer/refresh viewer-1
+/vis/viewer/update viewer-1
+/vis/viewer/rebuild
+/vis/viewer/refresh
+/vis/viewer/flush
+/vis/viewer/refresh viewer-1
+/vis/viewer/update viewer-1
+/vis/viewer/rebuild
+/vis/viewer/refresh
+/vis/viewer/flush
+/vis/viewer/refresh viewer-1
+/vis/viewer/update viewer-1
+/vis/viewer/rebuild
+/vis/viewer/refresh
+/vis/viewer/flush
+/vis/viewer/refresh viewer-1
+/vis/viewer/update viewer-1
+/vis/viewer/rebuild
+/vis/viewer/refresh
+/vis/viewer/flush
+/vis/viewer/refresh viewer-1
+/vis/viewer/update viewer-1
+/vis/viewer/rebuild
+/vis/viewer/refresh
+/vis/viewer/flush
+/vis/viewer/refresh viewer-1
+/vis/viewer/update viewer-1
