@@ -70,24 +70,24 @@ void BeamTestPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 	particleGun->GeneratePrimaryVertex(anEvent);*/
 
 	//particleGun->SetParticleEnergy(1.176*MeV);   /////Cs-137 
-	//particleGun->SetParticlePosition(G4ThreeVector(0.*cm,0.*cm,0.*cm));
+	//particleGun->SetParticlePosition(G4ThreeVector(0.*m,1.5*m,0.*m));
 	//particleGun->SetParticleMomentumDirection(g2direction);
 	//particleGun->GeneratePrimaryVertex(anEvent);
 
 	//particleGun->SetParticleEnergy(1.176*MeV);   /////Cs-137
-	//particleGun->SetParticlePosition(G4ThreeVector(2.*m,2.*m,0.*cm));
-	//particleGun->SetParticleMomentumDirection(g2direction);
-	//particleGun->GeneratePrimaryVertex(anEvent);
-
-	//particleGun->SetParticleEnergy(1.176*MeV);   /////Cs-137
-	//particleGun->SetParticlePosition(G4ThreeVector(-1.*m,1.*m,0.*cm));
+	//particleGun->SetParticlePosition(G4ThreeVector(1.5*m,0.*m,0.*cm));
 	//particleGun->SetParticleMomentumDirection(g2direction);
 	//particleGun->GeneratePrimaryVertex(anEvent);
 
 	particleGun->SetParticleEnergy(1.176*MeV);   /////Cs-137
-	particleGun->SetParticlePosition(G4ThreeVector(1.*m,-1.*m,0.*cm));
+	particleGun->SetParticlePosition(G4ThreeVector(1.*m,-1.*m,0.*cm)); 
 	particleGun->SetParticleMomentumDirection(g2direction);
 	particleGun->GeneratePrimaryVertex(anEvent);
+
+	//particleGun->SetParticleEnergy(1.176*MeV);   /////Cs-137
+	//particleGun->SetParticlePosition(G4ThreeVector(-1.*m,-1.*m,0.*cm));
+	//particleGun->SetParticleMomentumDirection(g2direction);
+	//particleGun->GeneratePrimaryVertex(anEvent);
 
 	//particleGun->SetParticleEnergy(1.176*MeV);   /////Cs-137
 	//particleGun->SetParticlePosition(G4ThreeVector(-2.*m,-2.*m,0.*cm));

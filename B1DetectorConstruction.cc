@@ -610,7 +610,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
                     0,                       //copy number
                     checkOverlaps);          //overlaps checking
  
-
+  //logicEnv->SetVisAttributes(G4VisAttributes::Invisible);
   //
   // Select Material for pressure vessel
   //
@@ -633,7 +633,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
   constructCalorimeter(logicEnv, env_mat, 0);
   //constructCalorimeter(logicEnv, env_mat, 1);
   //constructCalorimeter(logicEnv, env_mat, 2);
-  //constructCalorimeter(logicEnv, env_mat, 3);
+  //constructCalorimeter(logicEnv, env_mat, 3);    //LEFT
 
   // Set Shape2 as scoring volume
   //
@@ -684,7 +684,7 @@ G4Material* B1DetectorConstruction::makePassingMaterial(void)
 }
 
 void B1DetectorConstruction::constructCalorimeter(G4LogicalVolume* pMotherVolume, G4Material* pMaterial, int nNum)
-{
+{	
   double calorimeter_sizeX = 6.0 * m;
   double calorimeter_sizeY = 5.0 * mm;
   double calorimeter_sizeZ = 5.0 * mm;
@@ -770,7 +770,7 @@ void B1DetectorConstruction::constructVessels(G4LogicalVolume* pMotherVolume, G4
   //
   G4bool checkOverlaps = true;
    G4NistManager* nist = G4NistManager::Instance();
-  G4Material* Concrete = nist->FindOrBuildMaterial("G4_CONCRETE"); 
+  G4Material* Concrete = nist->FindOrBuildMaterial("G4_PARAFFIN"); 
 
   //     
   // Pressure Vessel 1
@@ -919,6 +919,8 @@ void B1DetectorConstruction::constructWalls(G4LogicalVolume* logicEnv)
                     false,                   //no boolean operation
                     0,                       //copy number
                     checkOverlaps);          //overlaps checking
+                          
+
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

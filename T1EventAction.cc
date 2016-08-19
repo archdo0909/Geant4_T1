@@ -71,8 +71,22 @@ void BeamTestEventAction::EndOfEventAction(const G4Event* event)
 
 		if(0 != aHit->GetDepositedEnergy()){
 		//ofs<< i <<", "<< aHit->GetDepositedEnergy() <<", "<<aHit->GetPosition()<< G4endl;
-			ofs<< i << ", " <<aHit->GetDepositedEnergy() <<", "<<aHit->GetPosition()<<G4endl;
+	
+		//UP
+			ofs<< i << ", " <<aHit->GetDepositedEnergy() <<", "
+				<<((i-(1200/2-1))*10.0 - 5.0) << "," <<6000<<","<< 0 <<G4endl;  
+		//DOWN
+		//	ofs<< i << ", " <<aHit->GetDepositedEnergy() <<", "
+		//		<<-((i-(1200/2-1))*10.0 - 5.0) << "," <<-6000<<","<< 0 <<G4endl;  
+		////Left
+		//	ofs<< i << ", " <<aHit->GetDepositedEnergy() <<", "
+		//		<<-6000<< "," <<-((i-(1200/2-1))*10.0 - 5.0)<<","<< 0 <<G4endl;  
+		////Right
+		//	ofs<< i << ", " <<aHit->GetDepositedEnergy() <<", "
+		//		<<6000<< "," <<((i-(1200/2-1))*10.0 - 5.0)<<","<< 0 <<G4endl;
           // aHit->Print();
+		
+
 		G4cout<<"Hit "<<i<<G4endl;
 		}
 

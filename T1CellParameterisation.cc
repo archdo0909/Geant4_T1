@@ -29,6 +29,13 @@
 #include "G4ThreeVector.hh"
 #include "G4VPhysicalVolume.hh"
 #include "G4SystemOfUnits.hh"
+#include <iostream>
+#include <math.h>
+#include <cmath>
+#include "random.h"
+#define M_PI 3.14159265358979323846
+
+
 
 //T1CellParameterisation::T1CellParameterisation()
 //{
@@ -60,14 +67,27 @@ T1CellParameterisation::T1CellParameterisation(int nRow, int nColumn)///////go t
 	// Initialise
 	int nNumCell = nRow * nColumn;
 
-	for(int i=0; i<nNumCell; i++)
+//	for(int i=0; i<nNumCell; i++)
+//	{
+//		int column = i / nRow;
+//		int row = i % nRow;
+//
+////		yCell.push_back(0.*mm);        ///5mm
+////		xCell.push_back((column-(nColumn/2-1))*10.*mm - 5.*mm);
+//		xCell.push_back((column-(nColumn/2-1))*10.*mm - 5.*mm + rand_normal(0.0, 1.1)*10.*mm);
+//		yCell.push_back(rand_normal(0.0, 1.1)*100.*mm);
+//		zCell.push_back(0.*mm);
+//	}
+	//+1side 
+	for(int i = 0; i<nNumCell; i++)
 	{
 		int column = i / nRow;
 		int row = i % nRow;
 
-		yCell.push_back(0.*mm);        ///5mm
-		xCell.push_back((column-(nColumn/2-1))*10.*mm - 5.*mm);
-		zCell.push_back(0.*mm);
+		xCell.push_back((column-(nColumn/2-1))*10.*mm - 5.*mm + 10.*mm);
+		yCell.push_back(0);
+		zCell.push_back(0);
+
 	}
 
 

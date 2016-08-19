@@ -101,6 +101,9 @@
     <ClCompile Include="T1PrimaryGeneratorAction.cc" />
     <ClCompile Include="T1SteppingAction.cc" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="random.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
